@@ -2,21 +2,18 @@ export type UserRole = "user" | "admin";
 export type UserPlan = "free" | "premium";
 export type UserStatus = "active" | "inactive";
 
-export interface User {
+export interface Profile {
   id: string;
   email: string;
   name: string;
-  avatar_url?: string;
-  role: UserRole;
+  avatar_url?: string | null;
   plan: UserPlan;
   status: UserStatus;
   created_at: string;
 }
 
-export interface LoginRecord {
-  id: string;
-  user_id: string;
-  data_hora: string;
+export interface AuthUser extends Profile {
+  role: UserRole;
 }
 
 export interface Carteira {
@@ -31,22 +28,24 @@ export interface Sessao {
   entradas: number;
   ganhos: number;
   perdas: number;
-  duracao: number; // minutes
+  duracao: number;
   resultado: number;
   created_at: string;
 }
 
-export type LiveStatus = "agendada" | "online" | "finalizada";
+export type LiveStatus = "agendada" | "ao_vivo" | "finalizada";
 
 export interface Live {
   id: string;
   titulo: string;
+  descricao?: string | null;
   link: string;
-  data: string; // ISO
+  data: string;
   status: LiveStatus;
-  ganhos?: number;
-  perdas?: number;
-  caixa_final?: number;
+  is_premium: boolean;
+  ganhos?: number | null;
+  perdas?: number | null;
+  caixa_final?: number | null;
 }
 
 export interface Convite {
@@ -54,15 +53,15 @@ export interface Convite {
   quantidade: number;
 }
 
-export type DepoimentoTipo = "texto" | "imagem" | "video";
+export type DepoimentoTipo = "texto" | "video";
 
 export interface Depoimento {
   id: string;
   user_id: string;
-  user_name: string;
   tipo: DepoimentoTipo;
   conteudo: string;
   created_at: string;
+  user_name?: string;
 }
 
 export type Nivel = "Iniciante" | "Bronze" | "Prata" | "Ouro";
