@@ -1,41 +1,47 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  Calendar, Wallet, Gift, TrendingUp, TrendingDown, AlertTriangle, X, Trophy,
+  Calendar, Wallet, Gift, TrendingUp, TrendingDown, AlertTriangle, X, Trophy, Crown,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  carteirasStore, convitesStore, expertStore, livesStore, sessoesStore,
-} from "@/lib/store";
+import { carteiraApi, convitesApi, expertApi, livesApi, sessoesApi } from "@/services/api";
 import { calcularNivel, formatBRL, formatDate, nivelColor } from "@/lib/calculations";
 import { AITerminal } from "@/components/home/AITerminal";
 import { StatCard } from "@/components/ui/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { Carteira, Convite, Live, Sessao } from "@/types";
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, isPremium } = useAuth();
   const [dismissAlert, setDismissAlert] = useState(false);
+  const [carteira, setCarteira] = useState<Carteira | null>(null);
+  const [sessoes, setSessoes] = useState<Sessao[]>([]);
+  const [convite, setConvite] = useState<Convite>({ user_id: "", quantidade: 0 });
+  const [proximaLive, setProximaLive] = useState<Live | null>(null);
+  const [expertOnline, setExpertOnline] = useState(false);
 
-  const carteira = user ? carteirasStore.byUser(user.id) : undefined;
-  const sessoes = user ? sessoesStore.byUser(user.id) : [];
-  const convite = user ? convitesStore.byUser(user.id) : { user_id: "", quantidade: 0 };
-  const proximaLive = useMemo(
-    () => livesStore.all()
-      .filter((l) => l.status !== "finalizada" && new Date(l.data) >= new Date(Date.now() - 3600_000))
-      .sort((a, b) => +new Date(a.data) - +new Date(b.data))[0],
-    []
-  );
-  const expertOnline = expertStore.isOnline();
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const [c, s, cv, ups, on] = await Promise.all([
+        carteiraApi.byUser(user.id),
+        sessoesApi.byUser(user.id),
+        convitesApi.byUser(user.id),
+        livesApi.upcoming(isPremium),
+        expertApi.isOnline(),
+      ]);
+      setCarteira(c);
+      setSessoes(s);
+      setConvite(cv);
+      setProximaLive(ups[0] ?? null);
+      setExpertOnline(on);
+    })();
+  }, [user, isPremium]);
 
   const ultimoResultado = sessoes[0]?.resultado ?? 0;
-  const tresPerdas =
-    sessoes.length >= 3 && sessoes.slice(0, 3).every((s) => s.resultado < 0);
-
+  const tresPerdas = sessoes.length >= 3 && sessoes.slice(0, 3).every((s) => s.resultado < 0);
   const nivel = calcularNivel(carteira?.banca_inicial ?? 0, carteira?.saldo_atual ?? 0);
-
-  // hint to re-render alerts after navigation
-  useEffect(() => { setDismissAlert(false); }, [sessoes.length]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -57,6 +63,21 @@ export default function Home() {
           </div>
           <Button size="icon" variant="ghost" onClick={() => setDismissAlert(true)} className="h-7 w-7">
             <X className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      {!isPremium && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/30 bg-gradient-to-r from-primary/10 to-transparent p-4">
+          <div className="flex items-center gap-3">
+            <Crown className="h-5 w-5 text-primary" />
+            <div>
+              <p className="text-sm font-semibold">Desbloqueie as Lives Premium</p>
+              <p className="text-xs text-muted-foreground">Acesso às salas exclusivas com o expert ao vivo.</p>
+            </div>
+          </div>
+          <Button size="sm" className="bg-primary text-primary-foreground hover:opacity-90">
+            Fazer upgrade
           </Button>
         </div>
       )}
@@ -114,13 +135,13 @@ export default function Home() {
             <div className="flex flex-1 flex-col">
               <p className="text-lg font-bold leading-tight">{proximaLive.titulo}</p>
               <p className="mt-1 text-xs text-muted-foreground">{formatDate(proximaLive.data)}</p>
-              {proximaLive.status === "online" && (
-                <Badge className="mt-2 w-fit bg-primary/15 text-primary border-primary/30 animate-pulse-glow" variant="outline">
-                  <span className="dot-online mr-1.5" /> AO VIVO
+              {proximaLive.is_premium && (
+                <Badge className="mt-2 w-fit border-primary/40 bg-primary/10 text-primary" variant="outline">
+                  <Crown className="mr-1 h-3 w-3" /> Premium
                 </Badge>
               )}
-              <a href={proximaLive.link} target="_blank" rel="noreferrer" className="mt-auto">
-                <Button className="w-full bg-gradient-primary text-primary-foreground hover:opacity-90">
+              <a href={proximaLive.link} target="_blank" rel="noreferrer" className="mt-auto pt-3">
+                <Button className="w-full bg-primary text-primary-foreground hover:opacity-90">
                   Entrar na sala
                 </Button>
               </a>

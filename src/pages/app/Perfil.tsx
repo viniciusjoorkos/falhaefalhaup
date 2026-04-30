@@ -1,43 +1,55 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { carteirasStore } from "@/lib/store";
+import { carteiraApi } from "@/services/api";
 import { calcularNivel, formatDate, nivelColor } from "@/lib/calculations";
 import { toast } from "sonner";
-import { Camera, Lock } from "lucide-react";
+import { Camera, Lock, Loader2, Crown } from "lucide-react";
+import type { Carteira } from "@/types";
 
 export default function Perfil() {
   const { user, updateProfile, updatePassword } = useAuth();
-  if (!user) return null;
   const fileRef = useRef<HTMLInputElement>(null);
   const [pwd, setPwd] = useState("");
+  const [carteira, setCarteira] = useState<Carteira | null>(null);
+  const [saving, setSaving] = useState(false);
 
-  const carteira = carteirasStore.byUser(user.id);
+  useEffect(() => {
+    if (user) carteiraApi.byUser(user.id).then(setCarteira);
+  }, [user]);
+
+  if (!user) return null;
   const nivel = calcularNivel(carteira?.banca_inicial ?? 0, carteira?.saldo_atual ?? 0);
   const initials = user.name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase();
 
-  function onUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function onUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 2 * 1024 * 1024) return toast.error("Máximo 2MB");
     const reader = new FileReader();
-    reader.onload = () => {
-      updateProfile({ avatar_url: reader.result as string });
-      toast.success("Avatar atualizado!");
+    reader.onload = async () => {
+      const res = await updateProfile({ avatar_url: reader.result as string });
+      if (res.ok) toast.success("Avatar atualizado!");
+      else toast.error(res.error ?? "Erro");
     };
     reader.readAsDataURL(file);
   }
 
-  function trocarSenha(e: React.FormEvent) {
+  async function trocarSenha(e: React.FormEvent) {
     e.preventDefault();
-    const res = updatePassword(pwd);
-    if (!res.ok) return toast.error(res.error ?? "Erro");
-    setPwd("");
-    toast.success("Senha atualizada!");
+    setSaving(true);
+    try {
+      const res = await updatePassword(pwd);
+      if (!res.ok) return toast.error(res.error ?? "Erro");
+      setPwd("");
+      toast.success("Senha atualizada!");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -51,8 +63,8 @@ export default function Perfil() {
         <div className="glass-card flex flex-col items-center gap-4 rounded-xl p-6 text-center lg:col-span-1">
           <div className="relative">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={user.avatar_url} />
-              <AvatarFallback className="bg-gradient-primary text-2xl font-bold text-primary-foreground">{initials}</AvatarFallback>
+              <AvatarImage src={user.avatar_url ?? undefined} />
+              <AvatarFallback className="bg-primary text-2xl font-bold text-primary-foreground">{initials}</AvatarFallback>
             </Avatar>
             <button
               onClick={() => fileRef.current?.click()}
@@ -68,7 +80,8 @@ export default function Perfil() {
           </div>
           <div className="flex flex-wrap justify-center gap-2">
             <Badge className={nivelColor(nivel)} variant="outline">Nível {nivel}</Badge>
-            <Badge variant="outline" className={user.plan === "premium" ? "text-primary border-primary/30" : ""}>
+            <Badge variant="outline" className={user.plan === "premium" ? "border-primary/40 text-primary" : ""}>
+              {user.plan === "premium" && <Crown className="mr-1 h-3 w-3" />}
               {user.plan === "premium" ? "Premium" : "Free"}
             </Badge>
             <Badge variant="outline">
@@ -103,8 +116,8 @@ export default function Perfil() {
                 <Label>Nova senha</Label>
                 <Input type="password" minLength={6} value={pwd} onChange={(e) => setPwd(e.target.value)} placeholder="Mínimo 6 caracteres" className="mt-1.5" />
               </div>
-              <Button type="submit" className="bg-gradient-primary text-primary-foreground hover:opacity-90">
-                Atualizar
+              <Button disabled={saving || pwd.length < 6} type="submit" className="bg-primary text-primary-foreground hover:opacity-90">
+                {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Atualizar
               </Button>
             </div>
           </form>

@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { convitesStore } from "@/lib/store";
+import { convitesApi } from "@/services/api";
 import { Gift, Copy, Check, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import type { Convite } from "@/types";
 
 const niveis = [
   { qtd: 1, label: "Surpresa", color: "text-info border-info/30 bg-info/10" },
@@ -15,10 +16,14 @@ const niveis = [
 
 export default function Indique() {
   const { user } = useAuth();
-  if (!user) return null;
-  const [convite, setConvite] = useState(convitesStore.byUser(user.id));
+  const [convite, setConvite] = useState<Convite>({ user_id: "", quantidade: 0 });
   const [copied, setCopied] = useState(false);
 
+  useEffect(() => {
+    if (user) convitesApi.byUser(user.id).then(setConvite);
+  }, [user]);
+
+  if (!user) return null;
   const link = `${window.location.origin}/signup?ref=${user.id}`;
 
   function copy() {
@@ -36,7 +41,7 @@ export default function Indique() {
       </div>
 
       <div className="glass-card flex flex-col items-center gap-4 rounded-xl bg-gradient-to-br from-primary/15 to-transparent p-8 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-primary shadow-glow">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-glow">
           <Gift className="h-7 w-7 text-primary-foreground" />
         </div>
         <div>
@@ -45,7 +50,7 @@ export default function Indique() {
         </div>
         <div className="flex w-full max-w-lg items-center gap-2">
           <Input value={link} readOnly className="font-mono text-xs" />
-          <Button onClick={copy} className="shrink-0 bg-gradient-primary text-primary-foreground hover:opacity-90">
+          <Button onClick={copy} className="shrink-0 bg-primary text-primary-foreground hover:opacity-90">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
           </Button>
         </div>
@@ -57,19 +62,14 @@ export default function Indique() {
           {niveis.map((n) => {
             const reached = convite.quantidade >= n.qtd;
             return (
-              <div
-                key={n.qtd}
-                className={`glass-card relative rounded-xl p-5 ${reached ? "ring-1 ring-primary/40" : "opacity-80"}`}
-              >
+              <div key={n.qtd} className={`glass-card relative rounded-xl p-5 ${reached ? "ring-1 ring-primary/40" : "opacity-80"}`}>
                 <div className="flex items-start justify-between">
                   <Trophy className={`h-6 w-6 ${reached ? "text-primary" : "text-muted-foreground"}`} />
                   <Badge className={n.color} variant="outline">{n.label}</Badge>
                 </div>
                 <p className="mt-4 text-3xl font-bold">{n.qtd}</p>
                 <p className="text-xs text-muted-foreground">{n.qtd === 1 ? "indicação" : "indicações"}</p>
-                {reached && (
-                  <p className="mt-3 text-xs font-semibold text-primary">✓ Conquistado</p>
-                )}
+                {reached && <p className="mt-3 text-xs font-semibold text-primary">✓ Conquistado</p>}
               </div>
             );
           })}
