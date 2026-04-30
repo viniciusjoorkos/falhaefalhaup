@@ -145,8 +145,8 @@ function LivesTab() {
     try {
       await livesApi.create({
         titulo, descricao, link, data: new Date(data).toISOString(),
-        status: statusNew, is_premium: isPremium, id: "",
-      });
+        status: statusNew, is_premium: isPremium,
+      } as any);
       setTitulo(""); setDescricao(""); setLink(""); setData(""); setIsPremium(false); setStatusNew("agendada");
       setOpen(false); await refresh();
       toast.success("Live criada");
