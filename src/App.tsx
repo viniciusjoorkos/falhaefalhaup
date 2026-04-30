@@ -19,6 +19,7 @@ import Indique from "./pages/app/Indique";
 import Depoimentos from "./pages/app/Depoimentos";
 import Perfil from "./pages/app/Perfil";
 import Admin from "./pages/app/Admin";
+import Premium from "./pages/app/Premium";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
               <Route path="carteira" element={<Carteira />} />
               <Route path="agenda" element={<Agenda />} />
               <Route path="gravadas" element={<Gravadas />} />
+              <Route path="premium" element={<Premium />} />
               <Route path="indique" element={<Indique />} />
               <Route path="depoimentos" element={<Depoimentos />} />
               <Route path="perfil" element={<Perfil />} />

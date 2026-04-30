@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   Home, Calendar, Video, Wallet, Gift, ExternalLink, User as UserIcon,
-  Shield, LogOut, Menu, MessageSquare, Activity,
+  Shield, LogOut, Menu, MessageSquare, Crown,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,13 +23,13 @@ const navItems = [
 ];
 
 export default function DashboardLayout() {
-  const { user, logout, isAdmin } = useAuth();
+  const { user, logout, isAdmin, isPremium } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
 
@@ -38,7 +38,6 @@ export default function DashboardLayout() {
 
   return (
     <div className="min-h-screen flex w-full bg-background">
-      {/* Sidebar */}
       <aside
         className={cn(
           "fixed lg:sticky top-0 z-40 h-screen w-64 shrink-0 border-r border-sidebar-border bg-sidebar transition-transform",
@@ -46,12 +45,12 @@ export default function DashboardLayout() {
         )}
       >
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary shadow-glow">
-            <Activity className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-glow">
+            <Crown className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm font-bold tracking-tight">TradeDesk</p>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Pro Traders</p>
+            <p className="text-sm font-bold tracking-tight">REZENDE CLUB</p>
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Trader's Lounge</p>
           </div>
         </div>
 
@@ -75,6 +74,24 @@ export default function DashboardLayout() {
               {item.label}
             </NavLink>
           ))}
+
+          {isPremium && (
+            <NavLink
+              to="/app/premium"
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-primary/15 text-primary shadow-soft"
+                    : "text-primary hover:bg-primary/10"
+                )
+              }
+            >
+              <Crown className="h-4 w-4" />
+              Lives Premium
+            </NavLink>
+          )}
 
           <a
             href="https://members.example.com"
@@ -129,7 +146,10 @@ export default function DashboardLayout() {
 
         <div className="absolute bottom-0 left-0 right-0 border-t border-sidebar-border p-3">
           <div className="rounded-lg bg-sidebar-accent/50 p-3 text-xs text-muted-foreground">
-            <p className="font-medium text-foreground">Plano {user?.plan === "premium" ? "Premium" : "Free"}</p>
+            <p className="flex items-center gap-1.5 font-medium text-foreground">
+              {user?.plan === "premium" && <Crown className="h-3 w-3 text-primary" />}
+              Plano {user?.plan === "premium" ? "Premium" : "Free"}
+            </p>
             <p className="mt-0.5">{user?.plan === "free" ? "Limite de 5 sessões" : "Acesso ilimitado"}</p>
           </div>
         </div>
@@ -142,16 +162,10 @@ export default function DashboardLayout() {
         />
       )}
 
-      {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-border bg-background/80 px-4 backdrop-blur lg:px-8">
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setOpen((v) => !v)}
-            >
+            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen((v) => !v)}>
               <Menu className="h-5 w-5" />
             </Button>
             <h1 className="text-base font-semibold tracking-tight lg:text-lg">
@@ -167,8 +181,8 @@ export default function DashboardLayout() {
                   <span className="block text-[10px] text-muted-foreground">{user?.email}</span>
                 </span>
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.avatar_url} alt={user?.name} />
-                  <AvatarFallback className="bg-gradient-primary text-xs font-bold text-primary-foreground">
+                  <AvatarImage src={user?.avatar_url ?? undefined} alt={user?.name} />
+                  <AvatarFallback className="bg-primary text-xs font-bold text-primary-foreground">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
@@ -211,6 +225,7 @@ function currentTitle(path: string): string {
   if (path.startsWith("/app/indique")) return "Indique e Ganhe";
   if (path.startsWith("/app/depoimentos")) return "Depoimentos";
   if (path.startsWith("/app/perfil")) return "Perfil";
+  if (path.startsWith("/app/premium")) return "Lives Premium";
   if (path.startsWith("/app/admin")) return "Painel Administrativo";
-  return "TradeDesk";
+  return "REZENDE CLUB";
 }
