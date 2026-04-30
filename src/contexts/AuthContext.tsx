@@ -1,91 +1,134 @@
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
-import {
-  loginsStore, seedIfNeeded, session, usersStore,
-} from "@/lib/store";
-import type { User } from "@/types";
+import { supabase } from "@/integrations/supabase/client";
+import type { Session } from "@supabase/supabase-js";
+import type { AuthUser, UserPlan, UserStatus, UserRole } from "@/types";
 
 interface AuthContextValue {
-  user: User | null;
+  user: AuthUser | null;
+  session: Session | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   signup: (name: string, email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
-  logout: () => void;
-  updateProfile: (patch: Partial<User>) => void;
-  updatePassword: (newPassword: string) => { ok: boolean; error?: string };
+  logout: () => Promise<void>;
+  updateProfile: (patch: { name?: string; avatar_url?: string | null }) => Promise<{ ok: boolean; error?: string }>;
+  updatePassword: (newPassword: string) => Promise<{ ok: boolean; error?: string }>;
+  refreshUser: () => Promise<void>;
   isAdmin: boolean;
+  isPremium: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+async function loadAuthUser(userId: string, email: string): Promise<AuthUser | null> {
+  const [{ data: profile }, { data: roleRows }] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
+    supabase.from("user_roles").select("role").eq("user_id", userId),
+  ]);
+  if (!profile) return null;
+  const isAdmin = (roleRows ?? []).some((r) => r.role === "admin");
+  return {
+    id: profile.id,
+    email: profile.email ?? email,
+    name: profile.name,
+    avatar_url: profile.avatar_url,
+    plan: profile.plan as UserPlan,
+    status: profile.status as UserStatus,
+    created_at: profile.created_at,
+    role: (isAdmin ? "admin" : "user") as UserRole,
+  };
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    seedIfNeeded();
-    const id = session.getId();
-    if (id) {
-      const u = usersStore.byId(id);
-      if (u) {
-        const { password: _p, ...rest } = u;
-        setUser(rest);
-      }
+  const hydrate = async (s: Session | null) => {
+    setSession(s);
+    if (s?.user) {
+      // defer to avoid deadlocks per auth guidance
+      setTimeout(async () => {
+        const u = await loadAuthUser(s.user.id, s.user.email ?? "");
+        setUser(u);
+      }, 0);
+    } else {
+      setUser(null);
     }
-    setLoading(false);
+  };
+
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_evt, s) => {
+      hydrate(s);
+    });
+    supabase.auth.getSession().then(({ data }) => {
+      hydrate(data.session).finally(() => setLoading(false));
+    });
+    return () => sub.subscription.unsubscribe();
   }, []);
 
+  const refreshUser = async () => {
+    if (session?.user) {
+      const u = await loadAuthUser(session.user.id, session.user.email ?? "");
+      setUser(u);
+    }
+  };
+
   const login: AuthContextValue["login"] = async (email, password) => {
-    const u = usersStore.byEmail(email);
-    if (!u) return { ok: false, error: "Usuário não encontrado." };
-    if (u.password !== password) return { ok: false, error: "Senha incorreta." };
-    session.setId(u.id);
-    loginsStore.add(u.id);
-    const { password: _p, ...rest } = u;
-    setUser(rest);
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    if (error) return { ok: false, error: error.message };
     return { ok: true };
   };
 
   const signup: AuthContextValue["signup"] = async (name, email, password) => {
-    if (usersStore.byEmail(email)) return { ok: false, error: "Email já cadastrado." };
     if (password.length < 6) return { ok: false, error: "Senha deve ter ao menos 6 caracteres." };
-    const u = usersStore.create({ name, email, password });
-    session.setId(u.id);
-    loginsStore.add(u.id);
-    const { password: _p, ...rest } = u;
-    setUser(rest);
+    const { error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/app`,
+        data: { name: name.trim() },
+      },
+    });
+    if (error) return { ok: false, error: error.message };
     return { ok: true };
   };
 
-  const logout = () => {
-    session.setId(null);
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
+    setSession(null);
   };
 
-  const updateProfile: AuthContextValue["updateProfile"] = (patch) => {
-    if (!user) return;
-    usersStore.update(user.id, patch);
-    setUser({ ...user, ...patch });
-  };
-
-  const updatePassword: AuthContextValue["updatePassword"] = (newPassword) => {
+  const updateProfile: AuthContextValue["updateProfile"] = async (patch) => {
     if (!user) return { ok: false, error: "Não autenticado." };
+    const { error } = await supabase.from("profiles").update(patch).eq("id", user.id);
+    if (error) return { ok: false, error: error.message };
+    setUser({ ...user, ...patch });
+    return { ok: true };
+  };
+
+  const updatePassword: AuthContextValue["updatePassword"] = async (newPassword) => {
     if (newPassword.length < 6) return { ok: false, error: "Senha deve ter ao menos 6 caracteres." };
-    usersStore.update(user.id, { password: newPassword } as any);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) return { ok: false, error: error.message };
     return { ok: true };
   };
 
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
+      session,
       loading,
       login,
       signup,
       logout,
       updateProfile,
       updatePassword,
+      refreshUser,
       isAdmin: user?.role === "admin",
+      isPremium: user?.plan === "premium" || user?.role === "admin",
     }),
-    [user, loading]
+    [user, session, loading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

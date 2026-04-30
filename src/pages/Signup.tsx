@@ -4,8 +4,15 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Activity, Loader2 } from "lucide-react";
+import { Crown, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const schema = z.object({
+  name: z.string().trim().min(2, "Nome muito curto").max(80, "Nome muito longo"),
+  email: z.string().trim().email("Email inválido").max(255),
+  password: z.string().min(6, "Senha deve ter ao menos 6 caracteres").max(72),
+});
 
 export default function Signup() {
   const { signup } = useAuth();
@@ -17,8 +24,11 @@ export default function Signup() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const parsed = schema.safeParse({ name, email, password });
+    if (!parsed.success) return toast.error(parsed.error.errors[0].message);
+
     setLoading(true);
-    const res = await signup(name.trim(), email.trim(), password);
+    const res = await signup(parsed.data.name, parsed.data.email, parsed.data.password);
     setLoading(false);
     if (!res.ok) {
       toast.error(res.error ?? "Erro ao cadastrar");
@@ -33,10 +43,10 @@ export default function Signup() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_55%)]" />
       <form onSubmit={onSubmit} className="glass-card relative w-full max-w-md rounded-2xl p-7 shadow-card lg:p-8">
         <div className="mb-6 flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary">
-            <Activity className="h-4 w-4 text-primary-foreground" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <Crown className="h-4 w-4" />
           </div>
-          <span className="text-lg font-bold">TradeDesk</span>
+          <span className="text-lg font-bold">REZENDE CLUB</span>
         </div>
 
         <h1 className="text-2xl font-bold tracking-tight">Crie sua conta</h1>
@@ -56,7 +66,7 @@ export default function Signup() {
             <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mínimo 6 caracteres" className="mt-1.5" />
           </div>
 
-          <Button type="submit" className="mt-2 h-11 w-full bg-gradient-primary text-primary-foreground hover:opacity-90" disabled={loading}>
+          <Button type="submit" className="mt-2 h-11 w-full bg-primary text-primary-foreground hover:opacity-90" disabled={loading}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Criar conta
           </Button>

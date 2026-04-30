@@ -1,15 +1,14 @@
-import { useMemo } from "react";
-import { livesStore } from "@/lib/store";
+import { useEffect, useState } from "react";
+import { livesApi } from "@/services/api";
 import { formatBRL, formatDate } from "@/lib/calculations";
 import { Badge } from "@/components/ui/badge";
 import { Video } from "lucide-react";
+import type { Live } from "@/types";
 
 export default function Gravadas() {
-  const lives = useMemo(
-    () => livesStore.all().filter((l) => l.status === "finalizada")
-      .sort((a, b) => +new Date(b.data) - +new Date(a.data)),
-    []
-  );
+  const [lives, setLives] = useState<Live[]>([]);
+
+  useEffect(() => { livesApi.finalizadas().then(setLives); }, []);
 
   return (
     <div className="flex flex-col gap-6">

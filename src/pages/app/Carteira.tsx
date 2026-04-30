@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { carteirasStore, sessoesStore } from "@/lib/store";
+import { carteiraApi, sessoesApi } from "@/services/api";
 import { formatBRL, formatDate } from "@/lib/calculations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,59 +9,88 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
 } from "@/components/ui/dialog";
 import { StatCard } from "@/components/ui/stat-card";
-import { Wallet, TrendingUp, TrendingDown, Plus, Lock } from "lucide-react";
+import { Wallet, TrendingUp, TrendingDown, Plus, Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import type { Carteira, Sessao } from "@/types";
+
+const FREE_LIMIT = 5;
 
 export default function Carteira() {
   const { user } = useAuth();
-  if (!user) return null;
-
-  const [carteira, setCarteira] = useState(carteirasStore.byUser(user.id));
-  const [sessoes, setSessoes] = useState(sessoesStore.byUser(user.id));
+  const [carteira, setCarteira] = useState<Carteira | null>(null);
+  const [sessoes, setSessoes] = useState<Sessao[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [bancaInicial, setBancaInicial] = useState("");
   const [openSession, setOpenSession] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const [entradas, setEntradas] = useState("");
   const [ganhos, setGanhos] = useState("");
   const [perdas, setPerdas] = useState("");
   const [duracao, setDuracao] = useState("");
 
-  const totalLucro = sessoes.reduce((acc, s) => acc + s.resultado, 0);
-  const limiteAtingido = user.plan === "free" && sessoes.length >= 5;
-
-  function refreshData() {
-    setCarteira(carteirasStore.byUser(user!.id));
-    setSessoes(sessoesStore.byUser(user!.id));
+  async function refresh() {
+    if (!user) return;
+    setLoading(true);
+    try {
+      const [c, s] = await Promise.all([carteiraApi.byUser(user.id), sessoesApi.byUser(user.id)]);
+      setCarteira(c);
+      setSessoes(s);
+    } finally {
+      setLoading(false);
+    }
   }
+  useEffect(() => { refresh(); }, [user]);
 
-  function salvarBanca(e: React.FormEvent) {
+  if (!user) return null;
+
+  const totalLucro = sessoes.reduce((acc, s) => acc + s.resultado, 0);
+  const limiteAtingido = user.plan === "free" && sessoes.length >= FREE_LIMIT;
+
+  async function salvarBanca(e: React.FormEvent) {
     e.preventDefault();
     const v = Number(bancaInicial);
     if (!v || v <= 0) return toast.error("Informe um valor válido");
-    carteirasStore.upsert({ user_id: user!.id, banca_inicial: v, saldo_atual: v });
-    refreshData();
-    toast.success("Banca inicial registrada!");
+    setSaving(true);
+    try {
+      await carteiraApi.setBancaInicial(user!.id, v);
+      await refresh();
+      toast.success("Banca inicial registrada!");
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao salvar");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function salvarSessao(e: React.FormEvent) {
+  async function salvarSessao(e: React.FormEvent) {
     e.preventDefault();
     if (limiteAtingido) return toast.error("Limite do plano Free atingido");
-
     const e_ = Number(entradas), g = Number(ganhos), p = Number(perdas), d = Number(duracao);
     if (!e_ || e_ < 1) return toast.error("Número de entradas inválido");
     if (g < 0 || p < 0) return toast.error("Valores não podem ser negativos");
     if (!d || d < 1) return toast.error("Duração inválida");
-
-    sessoesStore.add({ user_id: user!.id, entradas: e_, ganhos: g, perdas: p, duracao: d });
-    refreshData();
-    setEntradas(""); setGanhos(""); setPerdas(""); setDuracao("");
-    setOpenSession(false);
-    toast.success("Sessão registrada!");
+    setSaving(true);
+    try {
+      await sessoesApi.add(user!.id, { entradas: e_, ganhos: g, perdas: p, duracao: d });
+      await refresh();
+      setEntradas(""); setGanhos(""); setPerdas(""); setDuracao("");
+      setOpenSession(false);
+      toast.success("Sessão registrada!");
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao salvar");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  if (!carteira) {
+  if (loading && !carteira) {
+    return <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+  }
+
+  if (!carteira || carteira.banca_inicial === 0) {
     return (
       <div className="mx-auto flex max-w-md flex-col gap-6">
         <div>
@@ -70,7 +99,6 @@ export default function Carteira() {
             Antes de começar, defina o valor da sua banca inicial.
           </p>
         </div>
-
         <form onSubmit={salvarBanca} className="glass-card flex flex-col gap-4 rounded-xl p-6">
           <div>
             <Label htmlFor="banca">Banca inicial (R$)</Label>
@@ -80,8 +108,8 @@ export default function Carteira() {
               placeholder="1000.00" className="mt-1.5"
             />
           </div>
-          <Button type="submit" className="bg-gradient-primary text-primary-foreground hover:opacity-90">
-            Salvar e começar
+          <Button disabled={saving} type="submit" className="bg-primary text-primary-foreground hover:opacity-90">
+            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Salvar e começar
           </Button>
         </form>
       </div>
@@ -100,36 +128,24 @@ export default function Carteira() {
 
         <Dialog open={openSession} onOpenChange={setOpenSession}>
           <DialogTrigger asChild>
-            <Button disabled={limiteAtingido} className="bg-gradient-primary text-primary-foreground hover:opacity-90">
+            <Button disabled={limiteAtingido} className="bg-primary text-primary-foreground hover:opacity-90">
               {limiteAtingido ? <Lock className="mr-2 h-4 w-4" /> : <Plus className="mr-2 h-4 w-4" />}
               Nova sessão
             </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Registrar sessão</DialogTitle>
-            </DialogHeader>
+            <DialogHeader><DialogTitle>Registrar sessão</DialogTitle></DialogHeader>
             <form onSubmit={salvarSessao} className="grid gap-4 py-2">
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label>Entradas</Label>
-                  <Input type="number" min={1} value={entradas} onChange={(e) => setEntradas(e.target.value)} className="mt-1.5" />
-                </div>
-                <div>
-                  <Label>Duração (min)</Label>
-                  <Input type="number" min={1} value={duracao} onChange={(e) => setDuracao(e.target.value)} className="mt-1.5" />
-                </div>
-                <div>
-                  <Label className="text-primary">Ganhos (R$)</Label>
-                  <Input type="number" min={0} step="0.01" value={ganhos} onChange={(e) => setGanhos(e.target.value)} className="mt-1.5 border-primary/30 focus-visible:ring-primary" />
-                </div>
-                <div>
-                  <Label className="text-destructive">Perdas (R$)</Label>
-                  <Input type="number" min={0} step="0.01" value={perdas} onChange={(e) => setPerdas(e.target.value)} className="mt-1.5 border-destructive/30 focus-visible:ring-destructive" />
-                </div>
+                <div><Label>Entradas</Label><Input type="number" min={1} value={entradas} onChange={(e) => setEntradas(e.target.value)} className="mt-1.5" /></div>
+                <div><Label>Duração (min)</Label><Input type="number" min={1} value={duracao} onChange={(e) => setDuracao(e.target.value)} className="mt-1.5" /></div>
+                <div><Label className="text-primary">Ganhos (R$)</Label><Input type="number" min={0} step="0.01" value={ganhos} onChange={(e) => setGanhos(e.target.value)} className="mt-1.5 border-primary/30 focus-visible:ring-primary" /></div>
+                <div><Label className="text-destructive">Perdas (R$)</Label><Input type="number" min={0} step="0.01" value={perdas} onChange={(e) => setPerdas(e.target.value)} className="mt-1.5 border-destructive/30 focus-visible:ring-destructive" /></div>
               </div>
               <DialogFooter>
-                <Button type="submit" className="bg-gradient-primary text-primary-foreground hover:opacity-90">Salvar sessão</Button>
+                <Button disabled={saving} type="submit" className="bg-primary text-primary-foreground hover:opacity-90">
+                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Salvar sessão
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -138,7 +154,7 @@ export default function Carteira() {
 
       {limiteAtingido && (
         <div className="rounded-xl border border-warning/30 bg-warning/10 p-4 text-sm text-warning">
-          Você atingiu o limite de 5 sessões do plano Free. Faça upgrade para Premium para continuar.
+          Você atingiu o limite de {FREE_LIMIT} sessões do plano Free. Faça upgrade para Premium para continuar.
         </div>
       )}
 
@@ -183,11 +199,7 @@ export default function Carteira() {
                 </tr>
               ))}
               {sessoes.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground">
-                    Nenhuma sessão registrada ainda
-                  </td>
-                </tr>
+                <tr><td colSpan={6} className="px-5 py-10 text-center text-muted-foreground">Nenhuma sessão registrada ainda</td></tr>
               )}
             </tbody>
           </table>
