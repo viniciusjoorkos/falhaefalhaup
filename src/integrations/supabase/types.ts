@@ -14,16 +14,239 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      carteiras: {
+        Row: {
+          banca_inicial: number
+          saldo_atual: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          banca_inicial?: number
+          saldo_atual?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          banca_inicial?: number
+          saldo_atual?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      convites: {
+        Row: {
+          quantidade: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          quantidade?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          quantidade?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      depoimentos: {
+        Row: {
+          conteudo: string
+          created_at: string
+          id: string
+          tipo: Database["public"]["Enums"]["depoimento_tipo"]
+          user_id: string
+        }
+        Insert: {
+          conteudo: string
+          created_at?: string
+          id?: string
+          tipo?: Database["public"]["Enums"]["depoimento_tipo"]
+          user_id: string
+        }
+        Update: {
+          conteudo?: string
+          created_at?: string
+          id?: string
+          tipo?: Database["public"]["Enums"]["depoimento_tipo"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      expert_status: {
+        Row: {
+          id: number
+          online: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          online?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          online?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      lives: {
+        Row: {
+          caixa_final: number | null
+          created_at: string
+          data: string
+          descricao: string | null
+          ganhos: number | null
+          id: string
+          is_premium: boolean
+          link: string
+          perdas: number | null
+          status: Database["public"]["Enums"]["live_status"]
+          titulo: string
+        }
+        Insert: {
+          caixa_final?: number | null
+          created_at?: string
+          data: string
+          descricao?: string | null
+          ganhos?: number | null
+          id?: string
+          is_premium?: boolean
+          link: string
+          perdas?: number | null
+          status?: Database["public"]["Enums"]["live_status"]
+          titulo: string
+        }
+        Update: {
+          caixa_final?: number | null
+          created_at?: string
+          data?: string
+          descricao?: string | null
+          ganhos?: number | null
+          id?: string
+          is_premium?: boolean
+          link?: string
+          perdas?: number | null
+          status?: Database["public"]["Enums"]["live_status"]
+          titulo?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          id: string
+          name: string
+          plan: Database["public"]["Enums"]["user_plan"]
+          status: Database["public"]["Enums"]["user_status"]
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          id: string
+          name: string
+          plan?: Database["public"]["Enums"]["user_plan"]
+          status?: Database["public"]["Enums"]["user_status"]
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          plan?: Database["public"]["Enums"]["user_plan"]
+          status?: Database["public"]["Enums"]["user_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sessoes: {
+        Row: {
+          created_at: string
+          duracao: number
+          entradas: number
+          ganhos: number
+          id: string
+          perdas: number
+          resultado: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duracao?: number
+          entradas?: number
+          ganhos?: number
+          id?: string
+          perdas?: number
+          resultado?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duracao?: number
+          entradas?: number
+          ganhos?: number
+          id?: string
+          perdas?: number
+          resultado?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_plan: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["user_plan"]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      depoimento_tipo: "texto" | "video"
+      live_status: "agendada" | "ao_vivo" | "finalizada"
+      user_plan: "free" | "premium"
+      user_status: "active" | "inactive"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +373,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      depoimento_tipo: ["texto", "video"],
+      live_status: ["agendada", "ao_vivo", "finalizada"],
+      user_plan: ["free", "premium"],
+      user_status: ["active", "inactive"],
+    },
   },
 } as const
