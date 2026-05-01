@@ -1,90 +1,103 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ArrowLeft, Crown, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, ArrowRight, Crown, ShieldCheck, Lock, Sparkles } from "lucide-react";
+import DottedSurface from "@/components/home/DottedSurface";
+import { PERFECTPAY_CHECKOUT_URL, goToCheckout } from "@/lib/checkout";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const schema = z.object({
-  name: z.string().trim().min(2, "Nome muito curto").max(80, "Nome muito longo"),
-  email: z.string().trim().email("Email inválido").max(255),
-  password: z.string().min(6, "Senha deve ter ao menos 6 caracteres").max(72),
-});
 
 export default function Signup() {
-  const { signup } = useAuth();
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const parsed = schema.safeParse({ name, email, password });
-    if (!parsed.success) return toast.error(parsed.error.errors[0].message);
-
-    setLoading(true);
-    const res = await signup(parsed.data.name, parsed.data.email, parsed.data.password);
-    setLoading(false);
-    if (!res.ok) {
-      toast.error(res.error ?? "Erro ao cadastrar");
+  function handleCheckout(e: React.MouseEvent) {
+    if (PERFECTPAY_CHECKOUT_URL === "#") {
+      e.preventDefault();
+      toast.message("Checkout em breve", {
+        description: "O link de pagamento ainda está sendo configurado.",
+      });
       return;
     }
-    toast.success("Conta criada!");
-    navigate("/app");
+    e.preventDefault();
+    goToCheckout();
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center px-4 py-10">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_55%)]" />
+    <div className="relative min-h-screen overflow-hidden bg-[#050505] text-white antialiased">
+      <DottedSurface />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_30%,rgba(212,175,55,0.18),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_100%,rgba(0,0,0,0.6),transparent_60%)]" />
 
-      <Link
-        to="/"
-        className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/40 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur transition hover:border-primary/40 hover:text-foreground sm:left-6 sm:top-6"
-      >
-        <ArrowLeft className="h-3.5 w-3.5" /> Voltar à home
-      </Link>
-
-      <form onSubmit={onSubmit} className="glass-card relative w-full max-w-md rounded-2xl p-7 shadow-card lg:p-8">
-        <div className="mb-6 flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Crown className="h-4 w-4" />
-          </div>
-          <span className="text-lg font-bold">REZENDE CLUB</span>
+      {/* top bar */}
+      <header className="relative z-10">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16 sm:px-6">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] text-white/60 backdrop-blur transition hover:border-white/20 hover:text-white"
+          >
+            <ArrowLeft className="h-3 w-3" /> Voltar
+          </Link>
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md border border-amber-500/30 bg-black/40">
+              <Crown className="h-3.5 w-3.5 text-amber-400" />
+            </div>
+            <span className="font-serif text-[11px] tracking-[0.28em] text-white/90 sm:text-[12px]">
+              RZ&nbsp;TRADER&nbsp;STHUB
+            </span>
+          </Link>
         </div>
+      </header>
 
-        <h1 className="text-2xl font-bold tracking-tight">Crie sua conta</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Comece grátis e faça upgrade quando quiser.</p>
+      <main className="relative z-10 flex min-h-[calc(100vh-3.5rem)] items-center justify-center px-4 pb-16 pt-6 sm:pt-10">
+        <div className="w-full max-w-[460px] text-center">
+          <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-amber-300/80 sm:text-[10px]">
+            Solicitar <span className="mx-2 text-white/30">·</span> acesso
+          </p>
 
-        <div className="mt-6 flex flex-col gap-4">
-          <div>
-            <Label htmlFor="name">Nome</Label>
-            <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu nome" className="mt-1.5" />
+          <h1 className="mt-5 font-serif text-[34px] font-light leading-[1.05] tracking-tight text-white sm:text-5xl">
+            Entrada por <br />
+            <span className="italic text-amber-300/95">convite pago.</span>
+          </h1>
+
+          <p className="mx-auto mt-4 max-w-sm text-[13px] leading-relaxed text-white/55">
+            O acesso ao hub é liberado após a confirmação da sua compra.
+            Em seguida, suas credenciais são enviadas por e-mail manualmente pela curadoria.
+          </p>
+
+          {/* card */}
+          <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left shadow-[0_40px_120px_-30px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:p-7">
+            <ul className="space-y-3 text-[13px] text-white/70">
+              <li className="flex items-start gap-3">
+                <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-300/80" strokeWidth={1.5} />
+                <span>Acesso à sala fechada e às lives ao vivo com Rezende.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-300/80" strokeWidth={1.5} />
+                <span>Pagamento processado de forma segura pela PerfectPay.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-300/80" strokeWidth={1.5} />
+                <span>Cadastro liberado manualmente após a confirmação.</span>
+              </li>
+            </ul>
+
+            <a
+              href={PERFECTPAY_CHECKOUT_URL}
+              onClick={handleCheckout}
+              className="group mt-6 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-full bg-white text-[13px] font-medium text-neutral-900 shadow-[0_10px_40px_-10px_rgba(255,255,255,0.4)] transition hover:bg-neutral-100"
+            >
+              Ir para o checkout
+              <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+            </a>
+
+            <p className="mt-3 text-center text-[10px] uppercase tracking-[0.28em] text-white/30">
+              Vagas limitadas · acesso por convite
+            </p>
           </div>
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seu@email.com" className="mt-1.5" />
-          </div>
-          <div>
-            <Label htmlFor="password">Senha</Label>
-            <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mínimo 6 caracteres" className="mt-1.5" />
-          </div>
 
-          <Button type="submit" className="mt-2 h-11 w-full bg-primary text-primary-foreground hover:opacity-90" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Criar conta
-          </Button>
-
-          <p className="text-center text-sm text-muted-foreground">
-            Já tem conta?{" "}
-            <Link to="/login" className="font-semibold text-primary hover:underline">Entrar</Link>
+          <p className="mt-6 text-center text-[12px] text-white/50">
+            Já é membro?{" "}
+            <Link to="/login" className="font-medium text-amber-300/90 transition hover:text-amber-200">
+              Entrar →
+            </Link>
           </p>
         </div>
-      </form>
+      </main>
     </div>
   );
 }
