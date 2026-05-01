@@ -134,7 +134,7 @@ export default function Landing() {
                     </div>
                     <div className="flex items-center gap-1.5 text-[11px] text-emerald-300">
                       <TrendingUp className="h-3 w-3" />
-                      +1.247 pts
+                      + R$ 2.200
                     </div>
                   </div>
 
