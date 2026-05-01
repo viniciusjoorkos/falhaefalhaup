@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Crown, Loader2 } from "lucide-react";
+import { ArrowLeft, Crown, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
