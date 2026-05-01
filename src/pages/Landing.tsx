@@ -253,8 +253,8 @@ export default function Landing() {
             </p>
             <div className="mt-7 flex items-center gap-6">
               <div>
-                <p className="font-serif text-3xl font-light text-neutral-900">07</p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Lives / semana</p>
+                <p className="font-serif text-3xl font-light text-neutral-900">7+5</p>
+                <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Lives grátis · premium</p>
               </div>
               <div className="h-8 w-px bg-neutral-200" />
               <div>
