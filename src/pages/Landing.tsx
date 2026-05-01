@@ -18,7 +18,7 @@ export default function Landing() {
               <div className="flex h-8 w-8 items-center justify-center rounded-md border border-amber-500/30 bg-black/40">
                 <Crown className="h-4 w-4 text-amber-400" />
               </div>
-              <span className="font-serif text-[15px] tracking-[0.32em] text-white/90">REZENDE&nbsp;CLUB</span>
+              <span className="font-serif text-[15px] tracking-[0.32em] text-white/90">RZ&nbsp;TRADER&nbsp;STHUB</span>
             </Link>
             <nav className="flex items-center gap-2 text-sm">
               <Link
