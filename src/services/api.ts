@@ -228,4 +228,19 @@ export const adminApi = {
     const { error } = await supabase.from("profiles").update({ status }).eq("id", userId);
     if (error) throw error;
   },
+  async createUser(payload: { email: string; name?: string; plan?: "free" | "premium"; password?: string }): Promise<{ password?: string }> {
+    const { data, error } = await supabase.functions.invoke("admin-users", {
+      body: { action: "create", ...payload },
+    });
+    if (error) throw new Error(error.message);
+    if ((data as any)?.error) throw new Error((data as any).error);
+    return { password: (data as any)?.password };
+  },
+  async deleteUser(userId: string): Promise<void> {
+    const { data, error } = await supabase.functions.invoke("admin-users", {
+      body: { action: "delete", user_id: userId },
+    });
+    if (error) throw new Error(error.message);
+    if ((data as any)?.error) throw new Error((data as any).error);
+  },
 };

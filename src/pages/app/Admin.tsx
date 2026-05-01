@@ -13,7 +13,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Plus, Trash2, CheckCircle2, Crown, Loader2 } from "lucide-react";
+import { Plus, Trash2, CheckCircle2, Crown, Loader2, UserPlus, Copy } from "lucide-react";
 import { toast } from "sonner";
 import type { Live, Profile } from "@/types";
 
@@ -44,6 +44,13 @@ export default function Admin() {
 function UsersTab() {
   const [users, setUsers] = useState<(Profile & { role: "admin" | "user" })[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openNew, setOpenNew] = useState(false);
+  const [nEmail, setNEmail] = useState("");
+  const [nName, setNName] = useState("");
+  const [nPlan, setNPlan] = useState<"free" | "premium">("free");
+  const [nPassword, setNPassword] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [generated, setGenerated] = useState<string | null>(null);
 
   async function refresh() {
     setLoading(true);
@@ -62,59 +69,150 @@ function UsersTab() {
     await refresh();
     toast.success("Status atualizado");
   }
+  async function removeUser(id: string, email: string) {
+    if (!confirm(`Excluir o usuário ${email}? Esta ação é permanente.`)) return;
+    try {
+      await adminApi.deleteUser(id);
+      toast.success("Usuário excluído");
+      await refresh();
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao excluir");
+    }
+  }
+  async function createUser(e: React.FormEvent) {
+    e.preventDefault();
+    if (!nEmail) return toast.error("Informe o email");
+    setCreating(true);
+    try {
+      const res = await adminApi.createUser({
+        email: nEmail.trim(),
+        name: nName.trim() || undefined,
+        plan: nPlan,
+        password: nPassword.trim() || undefined,
+      });
+      toast.success("Usuário criado");
+      setGenerated(res.password ?? nPassword ?? null);
+      setNEmail(""); setNName(""); setNPassword(""); setNPlan("free");
+      await refresh();
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao criar");
+    } finally {
+      setCreating(false);
+    }
+  }
 
   if (loading) return <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
 
   return (
-    <div className="glass-card overflow-hidden rounded-xl">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-background/40 text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th className="px-5 py-3 text-left">Email</th>
-              <th className="px-5 py-3 text-left">Nome</th>
-              <th className="px-5 py-3 text-left">Cadastro</th>
-              <th className="px-5 py-3 text-left">Role</th>
-              <th className="px-5 py-3 text-left">Plano</th>
-              <th className="px-5 py-3 text-left">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {users.map((u) => (
-              <tr key={u.id}>
-                <td className="px-5 py-3 font-medium">{u.email}</td>
-                <td className="px-5 py-3">{u.name}</td>
-                <td className="px-5 py-3 text-muted-foreground">{formatDate(u.created_at)}</td>
-                <td className="px-5 py-3">
-                  <Badge variant="outline" className={u.role === "admin" ? "border-primary/40 text-primary" : ""}>
-                    {u.role}
-                  </Badge>
-                </td>
-                <td className="px-5 py-3">
-                  <Select value={u.plan} onValueChange={(v) => changePlan(u.id, v as any)}>
-                    <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="free">Free</SelectItem>
-                      <SelectItem value="premium">Premium</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </td>
-                <td className="px-5 py-3">
-                  <Select value={u.status} onValueChange={(v) => changeStatus(u.id, v as any)}>
-                    <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Ativo</SelectItem>
-                      <SelectItem value="inactive">Inativo</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </td>
-              </tr>
-            ))}
-            {users.length === 0 && (
-              <tr><td colSpan={6} className="px-5 py-8 text-center text-muted-foreground">Nenhum usuário</td></tr>
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-end">
+        <Dialog open={openNew} onOpenChange={(v) => { setOpenNew(v); if (!v) setGenerated(null); }}>
+          <DialogTrigger asChild>
+            <Button className="bg-primary text-primary-foreground hover:opacity-90">
+              <UserPlus className="mr-2 h-4 w-4" /> Adicionar usuário
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader><DialogTitle>Novo usuário</DialogTitle></DialogHeader>
+            {generated ? (
+              <div className="grid gap-3 py-2">
+                <p className="text-sm text-muted-foreground">
+                  Usuário criado. Compartilhe a senha de acesso (ela não será exibida novamente):
+                </p>
+                <div className="flex items-center gap-2 rounded-md border border-primary/30 bg-primary/5 px-3 py-2">
+                  <code className="flex-1 break-all text-sm">{generated}</code>
+                  <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(generated); toast.success("Copiado"); }}>
+                    <Copy className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+                <DialogFooter>
+                  <Button onClick={() => { setGenerated(null); setOpenNew(false); }}>Fechar</Button>
+                </DialogFooter>
+              </div>
+            ) : (
+              <form onSubmit={createUser} className="grid gap-3 py-2">
+                <div><Label>Email *</Label><Input type="email" value={nEmail} onChange={(e) => setNEmail(e.target.value)} className="mt-1.5" required /></div>
+                <div><Label>Nome</Label><Input value={nName} onChange={(e) => setNName(e.target.value)} className="mt-1.5" /></div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label>Plano</Label>
+                    <Select value={nPlan} onValueChange={(v) => setNPlan(v as any)}>
+                      <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="free">Free</SelectItem>
+                        <SelectItem value="premium">Premium</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div><Label>Senha (opcional)</Label><Input value={nPassword} onChange={(e) => setNPassword(e.target.value)} placeholder="Gerada automaticamente" className="mt-1.5" /></div>
+                </div>
+                <DialogFooter>
+                  <Button disabled={creating} type="submit" className="bg-primary text-primary-foreground hover:opacity-90">
+                    {creating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Criar
+                  </Button>
+                </DialogFooter>
+              </form>
             )}
-          </tbody>
-        </table>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="glass-card overflow-hidden rounded-xl">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-background/40 text-xs uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="px-5 py-3 text-left">Email</th>
+                <th className="px-5 py-3 text-left">Nome</th>
+                <th className="px-5 py-3 text-left">Cadastro</th>
+                <th className="px-5 py-3 text-left">Role</th>
+                <th className="px-5 py-3 text-left">Plano</th>
+                <th className="px-5 py-3 text-left">Status</th>
+                <th className="px-5 py-3 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {users.map((u) => (
+                <tr key={u.id}>
+                  <td className="px-5 py-3 font-medium">{u.email}</td>
+                  <td className="px-5 py-3">{u.name}</td>
+                  <td className="px-5 py-3 text-muted-foreground">{formatDate(u.created_at)}</td>
+                  <td className="px-5 py-3">
+                    <Badge variant="outline" className={u.role === "admin" ? "border-primary/40 text-primary" : ""}>
+                      {u.role}
+                    </Badge>
+                  </td>
+                  <td className="px-5 py-3">
+                    <Select value={u.plan} onValueChange={(v) => changePlan(u.id, v as any)}>
+                      <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="free">Free</SelectItem>
+                        <SelectItem value="premium">Premium</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </td>
+                  <td className="px-5 py-3">
+                    <Select value={u.status} onValueChange={(v) => changeStatus(u.id, v as any)}>
+                      <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="active">Ativo</SelectItem>
+                        <SelectItem value="inactive">Inativo</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <Button size="sm" variant="ghost" onClick={() => removeUser(u.id, u.email)} title="Excluir usuário">
+                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+              {users.length === 0 && (
+                <tr><td colSpan={7} className="px-5 py-8 text-center text-muted-foreground">Nenhum usuário</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
