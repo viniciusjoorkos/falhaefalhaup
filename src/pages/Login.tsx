@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Crown, Loader2 } from "lucide-react";
+import { ArrowLeft, Crown, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = (location.state as { from?: { pathname: string } } | null)?.from?.pathname ?? "/app";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,12 +26,19 @@ export default function Login() {
       return;
     }
     toast.success("Bem-vindo de volta!");
-    navigate("/app");
+    navigate(from, { replace: true });
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center px-4">
+    <div className="relative flex min-h-screen items-center justify-center px-4 py-10">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_55%)]" />
+
+      <Link
+        to="/"
+        className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/40 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur transition hover:border-primary/40 hover:text-foreground sm:left-6 sm:top-6"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" /> Voltar à home
+      </Link>
 
       <div className="relative grid w-full max-w-5xl gap-10 lg:grid-cols-2 lg:items-center">
         <div className="hidden flex-col gap-6 lg:flex">
