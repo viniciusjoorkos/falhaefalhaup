@@ -300,10 +300,10 @@ export default function Landing() {
       <section className="border-t border-neutral-200/80 bg-white">
         <div className="mx-auto grid max-w-6xl grid-cols-2 divide-y divide-neutral-200/80 px-6 py-14 sm:grid-cols-4 sm:divide-x sm:divide-y-0 sm:py-16">
           {[
-            { k: "+2.300", l: "Membros ativos" },
-            { k: "+18k", l: "Operações analisadas" },
+            { k: "+400", l: "Membros ativos" },
+            { k: "+R$ 500k", l: "Faturados na sala" },
+            { k: "30 win", l: "Sem gale em live" },
             { k: "92%", l: "Payout médio" },
-            { k: "4.9★", l: "Avaliação interna" },
           ].map((m, i) => (
             <div key={m.l} className={`px-2 py-4 text-center sm:py-2 ${i === 0 ? "" : ""}`}>
               <p className="font-serif text-3xl font-light text-neutral-900 sm:text-4xl">{m.k}</p>
