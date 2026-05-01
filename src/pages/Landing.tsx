@@ -197,9 +197,9 @@ export default function Landing() {
 
             {/* tiny stats below mockup */}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-mono text-[10px] uppercase tracking-[0.24em] text-white/40">
-              <span>+ 2.300 membros</span>
+              <span>+ 400 membros ativos</span>
               <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline-block" />
-              <span>7 lives / semana</span>
+              <span>7 lives grátis · 5 premium</span>
               <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline-block" />
               <span>payout até 92%</span>
             </div>
@@ -207,19 +207,18 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* LOGOS / brokers strip — SaaS social proof */}
+      {/* HISTORIC HIGHLIGHT strip */}
       <section className="border-t border-neutral-200/70 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-8">
-          <p className="text-center font-mono text-[10px] uppercase tracking-[0.32em] text-neutral-400">
-            Compatível com as principais corretoras
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-6 py-10 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-amber-700/80">
+            Marco histórico
           </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 font-serif text-sm tracking-[0.18em] text-neutral-400">
-            <span>IQ&nbsp;OPTION</span>
-            <span>QUOTEX</span>
-            <span>POCKET&nbsp;OPTION</span>
-            <span>EXNOVA</span>
-            <span>AVALON</span>
-          </div>
+          <h3 className="font-serif text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
+            <span className="italic text-amber-700">30 WIN</span> sem gale · ao vivo
+          </h3>
+          <p className="text-[12px] uppercase tracking-[0.28em] text-neutral-400">
+            Rezende fez história
+          </p>
         </div>
       </section>
 
