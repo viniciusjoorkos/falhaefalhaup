@@ -57,14 +57,11 @@ export default function Landing() {
 
         {/* Hero copy */}
         <div className="relative z-10 mx-auto max-w-5xl px-6 pb-24 pt-14 text-center sm:pb-32 sm:pt-20">
-          {/* status pill — SaaS-y */}
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 backdrop-blur">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.28em] text-white/70">
-              Sala ao vivo agora
+          {/* historic pill */}
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/[0.04] px-3 py-1 backdrop-blur">
+            <Trophy className="h-3 w-3 text-amber-300" strokeWidth={1.5} />
+            <span className="text-[10px] uppercase tracking-[0.28em] text-amber-200/90">
+              30 win sem gale em live · Rezende fez história
             </span>
           </div>
 
@@ -137,7 +134,7 @@ export default function Landing() {
                     </div>
                     <div className="flex items-center gap-1.5 text-[11px] text-emerald-300">
                       <TrendingUp className="h-3 w-3" />
-                      +1.247 pts
+                      + R$ 2.200
                     </div>
                   </div>
 
@@ -200,9 +197,9 @@ export default function Landing() {
 
             {/* tiny stats below mockup */}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-mono text-[10px] uppercase tracking-[0.24em] text-white/40">
-              <span>+ 2.300 membros</span>
+              <span>+ 400 membros ativos</span>
               <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline-block" />
-              <span>7 lives / semana</span>
+              <span>7 lives grátis · 5 premium</span>
               <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline-block" />
               <span>payout até 92%</span>
             </div>
@@ -210,19 +207,18 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* LOGOS / brokers strip — SaaS social proof */}
+      {/* HISTORIC HIGHLIGHT strip */}
       <section className="border-t border-neutral-200/70 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-8">
-          <p className="text-center font-mono text-[10px] uppercase tracking-[0.32em] text-neutral-400">
-            Compatível com as principais corretoras
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-6 py-10 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-amber-700/80">
+            Marco histórico
           </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 font-serif text-sm tracking-[0.18em] text-neutral-400">
-            <span>IQ&nbsp;OPTION</span>
-            <span>QUOTEX</span>
-            <span>POCKET&nbsp;OPTION</span>
-            <span>EXNOVA</span>
-            <span>AVALON</span>
-          </div>
+          <h3 className="font-serif text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
+            <span className="italic text-amber-700">30 WIN</span> sem gale · ao vivo
+          </h3>
+          <p className="text-[12px] uppercase tracking-[0.28em] text-neutral-400">
+            Rezende fez história
+          </p>
         </div>
       </section>
 
@@ -257,8 +253,8 @@ export default function Landing() {
             </p>
             <div className="mt-7 flex items-center gap-6">
               <div>
-                <p className="font-serif text-3xl font-light text-neutral-900">07</p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Lives / semana</p>
+                <p className="font-serif text-3xl font-light text-neutral-900">7+5</p>
+                <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Lives grátis · premium</p>
               </div>
               <div className="h-8 w-px bg-neutral-200" />
               <div>
@@ -304,10 +300,10 @@ export default function Landing() {
       <section className="border-t border-neutral-200/80 bg-white">
         <div className="mx-auto grid max-w-6xl grid-cols-2 divide-y divide-neutral-200/80 px-6 py-14 sm:grid-cols-4 sm:divide-x sm:divide-y-0 sm:py-16">
           {[
-            { k: "+2.300", l: "Membros ativos" },
-            { k: "+18k", l: "Operações analisadas" },
+            { k: "+400", l: "Membros ativos" },
+            { k: "+R$ 500k", l: "Faturados na sala" },
+            { k: "30 win", l: "Sem gale em live" },
             { k: "92%", l: "Payout médio" },
-            { k: "4.9★", l: "Avaliação interna" },
           ].map((m, i) => (
             <div key={m.l} className={`px-2 py-4 text-center sm:py-2 ${i === 0 ? "" : ""}`}>
               <p className="font-serif text-3xl font-light text-neutral-900 sm:text-4xl">{m.k}</p>
