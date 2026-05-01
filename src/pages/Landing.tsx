@@ -199,17 +199,24 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* HISTORIC HIGHLIGHT strip */}
+      {/* HISTORIC HIGHLIGHT — editorial, no box */}
       <section className="border-t border-neutral-200/70 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-6 py-10 text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-amber-700/80">
+        <div className="mx-auto max-w-4xl px-6 py-24 text-center sm:py-32">
+          <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-amber-700/80">
             Marco histórico
           </p>
-          <h3 className="font-serif text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
-            <span className="italic text-amber-700">30 WIN</span> sem gale · ao vivo
+          <h3 className="mt-6 font-serif text-[40px] font-light leading-[1.02] tracking-tight text-neutral-900 sm:text-6xl lg:text-7xl">
+            30 WIN
+            <br />
+            <span className="text-neutral-400">sem gale</span>
+            <br />
+            <span className="italic text-amber-700">em live.</span>
           </h3>
-          <p className="text-[12px] uppercase tracking-[0.28em] text-neutral-400">
-            Rezende fez história
+          <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.5em] text-neutral-500 sm:tracking-[0.6em]">
+            Rezende
+            <br className="sm:hidden" />
+            <span className="mx-2 text-neutral-300">·</span>
+            fez história
           </p>
         </div>
       </section>
