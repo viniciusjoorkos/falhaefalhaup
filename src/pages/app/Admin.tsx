@@ -13,7 +13,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Plus, Trash2, CheckCircle2, Crown, Loader2 } from "lucide-react";
+import { Plus, Trash2, CheckCircle2, Crown, Loader2, UserPlus, Copy } from "lucide-react";
 import { toast } from "sonner";
 import type { Live, Profile } from "@/types";
 
@@ -44,6 +44,13 @@ export default function Admin() {
 function UsersTab() {
   const [users, setUsers] = useState<(Profile & { role: "admin" | "user" })[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openNew, setOpenNew] = useState(false);
+  const [nEmail, setNEmail] = useState("");
+  const [nName, setNName] = useState("");
+  const [nPlan, setNPlan] = useState<"free" | "premium">("free");
+  const [nPassword, setNPassword] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [generated, setGenerated] = useState<string | null>(null);
 
   async function refresh() {
     setLoading(true);
@@ -61,6 +68,37 @@ function UsersTab() {
     await adminApi.updateStatus(id, status);
     await refresh();
     toast.success("Status atualizado");
+  }
+  async function removeUser(id: string, email: string) {
+    if (!confirm(`Excluir o usuário ${email}? Esta ação é permanente.`)) return;
+    try {
+      await adminApi.deleteUser(id);
+      toast.success("Usuário excluído");
+      await refresh();
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao excluir");
+    }
+  }
+  async function createUser(e: React.FormEvent) {
+    e.preventDefault();
+    if (!nEmail) return toast.error("Informe o email");
+    setCreating(true);
+    try {
+      const res = await adminApi.createUser({
+        email: nEmail.trim(),
+        name: nName.trim() || undefined,
+        plan: nPlan,
+        password: nPassword.trim() || undefined,
+      });
+      toast.success("Usuário criado");
+      setGenerated(res.password ?? nPassword ?? null);
+      setNEmail(""); setNName(""); setNPassword(""); setNPlan("free");
+      await refresh();
+    } catch (e: any) {
+      toast.error(e.message ?? "Erro ao criar");
+    } finally {
+      setCreating(false);
+    }
   }
 
   if (loading) return <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
