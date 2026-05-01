@@ -57,15 +57,7 @@ export default function Landing() {
 
         {/* Hero copy */}
         <div className="relative z-10 mx-auto max-w-5xl px-6 pb-24 pt-14 text-center sm:pb-32 sm:pt-20">
-          {/* historic pill */}
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/[0.04] px-3 py-1 backdrop-blur">
-            <Trophy className="h-3 w-3 text-amber-300" strokeWidth={1.5} />
-            <span className="text-[10px] uppercase tracking-[0.28em] text-amber-200/90">
-              30 win sem gale em live · Rezende fez história
-            </span>
-          </div>
-
-          <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.45em] text-amber-300/80 sm:text-[10px] sm:tracking-[0.55em]">
+          <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-amber-300/80 sm:text-[10px] sm:tracking-[0.55em]">
             Falha <span className="mx-2 text-white/30">·</span> é <span className="mx-2 text-white/30">·</span> falha
           </p>
 
