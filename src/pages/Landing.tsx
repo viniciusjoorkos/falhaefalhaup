@@ -57,14 +57,11 @@ export default function Landing() {
 
         {/* Hero copy */}
         <div className="relative z-10 mx-auto max-w-5xl px-6 pb-24 pt-14 text-center sm:pb-32 sm:pt-20">
-          {/* status pill — SaaS-y */}
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 backdrop-blur">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.28em] text-white/70">
-              Sala ao vivo agora
+          {/* historic pill */}
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/[0.04] px-3 py-1 backdrop-blur">
+            <Trophy className="h-3 w-3 text-amber-300" strokeWidth={1.5} />
+            <span className="text-[10px] uppercase tracking-[0.28em] text-amber-200/90">
+              30 win sem gale em live · Rezende fez história
             </span>
           </div>
 
