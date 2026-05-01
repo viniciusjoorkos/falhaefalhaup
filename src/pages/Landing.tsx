@@ -5,12 +5,10 @@ import DottedSurface from "@/components/home/DottedSurface";
 export default function Landing() {
   return (
     <div className="min-h-screen bg-white text-neutral-900 antialiased selection:bg-amber-200/70">
-      {/* Hero — black with dotted surface */}
+      {/* Hero — black, Apple-dark, with dotted surface */}
       <section className="relative isolate overflow-hidden bg-[#050505] text-white">
         <DottedSurface />
-        {/* radial gold spotlight */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_30%,rgba(212,175,55,0.18),transparent_70%)]" />
-        {/* bottom fade to white */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-white" />
 
         {/* Header */}
@@ -22,61 +20,82 @@ export default function Landing() {
               </div>
               <span className="font-serif text-[15px] tracking-[0.32em] text-white/90">REZENDE&nbsp;CLUB</span>
             </Link>
-            <nav className="flex items-center gap-5 text-sm">
-              <Link to="/login" className="hidden text-white/60 hover:text-white sm:inline">Entrar</Link>
+            <nav className="flex items-center gap-2 text-sm">
+              <Link
+                to="/login"
+                className="hidden h-9 items-center rounded-full px-4 text-sm text-white/70 transition hover:text-white sm:inline-flex"
+              >
+                Entrar
+              </Link>
               <Link
                 to="/signup"
-                className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-white/5 px-4 py-2 text-sm font-medium text-amber-300 backdrop-blur transition hover:bg-amber-500/10"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full bg-white px-4 text-sm font-medium text-neutral-900 transition hover:bg-neutral-100"
               >
-                Solicitar acesso <ArrowRight className="h-3.5 w-3.5" />
+                Solicitar acesso
               </Link>
             </nav>
           </div>
         </header>
 
         {/* Hero copy */}
-        <div className="relative z-10 mx-auto max-w-5xl px-6 pb-44 pt-24 text-center sm:pb-56 sm:pt-32">
-          <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-white/[0.03] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.32em] text-amber-300/90 backdrop-blur">
-            <span className="h-1 w-1 rounded-full bg-amber-400" /> Por convite
-          </span>
-
-          <h1 className="mt-8 font-serif text-5xl font-light leading-[1.02] tracking-tight text-white sm:text-7xl lg:text-[88px]">
-            Discreto.
-            <br />
-            <span className="italic text-amber-300/90">Restrito.</span>{" "}
-            <span className="text-white/95">Premium.</span>
-          </h1>
-
-          <p className="mx-auto mt-7 max-w-md text-sm tracking-wide text-white/55 sm:text-[15px]">
-            Um círculo fechado de traders. Sem vitrine.
+        <div className="relative z-10 mx-auto max-w-5xl px-6 pb-44 pt-20 text-center sm:pb-56 sm:pt-28">
+          {/* Frase de impacto */}
+          <p className="font-mono text-[10px] uppercase tracking-[0.6em] text-amber-300/80 sm:text-[11px]">
+            <span className="inline-block animate-[fade-in_0.6s_ease-out]">F</span>
+            <span>A</span><span>L</span><span>H</span><span>A</span>
+            <span className="mx-3 text-white/30">/</span>
+            <span>É</span>
+            <span className="mx-3 text-white/30">/</span>
+            <span>F</span><span>A</span><span>L</span><span>H</span><span>A</span>
           </p>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <h1 className="mt-6 font-serif text-[44px] font-light leading-[1.02] tracking-tight text-white sm:text-7xl lg:text-[92px]">
+            Sem desculpa.
+            <br />
+            <span className="italic text-amber-300/95">Sem ruído.</span>
+          </h1>
+
+          <p className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-white/55">
+            O clube fechado dos traders que param de inventar histórias para o próprio prejuízo.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/signup"
-              className="group inline-flex h-11 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-neutral-900 transition hover:bg-amber-100"
+              className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-neutral-900 shadow-[0_10px_40px_-10px_rgba(255,255,255,0.4)] transition hover:bg-neutral-100"
             >
-              Entrar no club
+              Quero meu acesso
               <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
             </Link>
             <Link
               to="/login"
-              className="inline-flex h-11 items-center rounded-full border border-white/15 px-6 text-sm font-medium text-white/80 transition hover:border-amber-400/50 hover:text-white"
+              className="inline-flex h-12 items-center rounded-full px-5 text-sm font-medium text-white/70 transition hover:text-white"
             >
-              Já sou membro
+              Já sou membro →
             </Link>
           </div>
+
+          <p className="mt-6 text-[11px] uppercase tracking-[0.28em] text-white/30">
+            Vagas limitadas · acesso por convite
+          </p>
         </div>
       </section>
 
-      {/* Pillars — typographic, no solid cards */}
+      {/* Pillars */}
       <section className="border-t border-neutral-200/80">
-        <div className="mx-auto grid max-w-6xl gap-px bg-neutral-200/80 px-0 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto max-w-6xl px-6 pt-20 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-amber-700/80">Por que o club</p>
+          <h2 className="mx-auto mt-3 max-w-2xl font-serif text-3xl font-light tracking-tight text-neutral-900 sm:text-4xl">
+            Tudo que você precisa.
+            <span className="text-neutral-400"> Nada que você não precisa.</span>
+          </h2>
+        </div>
+        <div className="mx-auto mt-12 grid max-w-6xl gap-px bg-neutral-200/80 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: Calendar, t: "Lives ao vivo", d: "Agenda integrada com salas reais." },
-            { icon: Wallet, t: "Carteira", d: "Banca e P&L automáticos por sessão." },
-            { icon: Trophy, t: "Níveis", d: "De Iniciante a Ouro pelo seu desempenho." },
-            { icon: ShieldCheck, t: "Anti-tilt", d: "Alertas em sequências negativas." },
+            { icon: Calendar, t: "Lives diárias", d: "Opere junto com o expert, em tempo real." },
+            { icon: Wallet, t: "Banca sob controle", d: "P&L automático. Stop antes do tilt." },
+            { icon: Trophy, t: "Evolução visível", d: "Suba de nível pelo desempenho — não pelo ego." },
+            { icon: ShieldCheck, t: "Sem promessa fácil", d: "Método. Disciplina. Repetição." },
           ].map((f) => (
             <div key={f.t} className="bg-white p-8">
               <f.icon className="h-5 w-5 text-amber-600" strokeWidth={1.5} />
@@ -89,20 +108,22 @@ export default function Landing() {
 
       {/* Premium block */}
       <section className="bg-neutral-50">
-        <div className="mx-auto max-w-4xl px-6 py-24 text-center">
+        <div className="mx-auto max-w-3xl px-6 py-24 text-center">
           <Crown className="mx-auto h-6 w-6 text-amber-600" strokeWidth={1.5} />
-          <h2 className="mt-5 text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
-            Lives <em className="not-italic text-amber-600">Premium</em>.<br />
-            Acesso direto ao expert.
+          <h2 className="mt-5 font-serif text-3xl font-light tracking-tight text-neutral-900 sm:text-5xl">
+            Lives <em className="not-italic text-amber-600">Premium</em>.
+            <br />
+            Frente a frente com o expert.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-neutral-500">
-            Salas exclusivas, sinais ao vivo e leitura de mercado em tempo real para membros premium.
+          <p className="mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-neutral-500">
+            Sala fechada. Leitura ao vivo. Decisões em segundos — não em threads.
           </p>
           <Link
             to="/signup"
-            className="mt-8 inline-flex h-11 items-center gap-2 rounded-full border border-amber-500/40 bg-white px-6 text-sm font-medium text-amber-700 transition hover:bg-amber-50"
+            className="group mt-9 inline-flex h-12 items-center gap-2 rounded-full bg-neutral-900 px-7 text-sm font-medium text-white transition hover:bg-neutral-800"
           >
-            Começar agora <ArrowRight className="h-4 w-4" />
+            Garantir minha vaga
+            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
           </Link>
         </div>
       </section>
