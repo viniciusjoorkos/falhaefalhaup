@@ -14,6 +14,7 @@ import {
   LineChart,
 } from "lucide-react";
 import DottedSurface from "@/components/home/DottedSurface";
+import SmokeBackdrop from "@/components/home/SmokeBackdrop";
 import deskImg from "@/assets/club-desk.jpg";
 import chessImg from "@/assets/club-chess.jpg";
 
