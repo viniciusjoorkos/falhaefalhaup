@@ -337,7 +337,7 @@ export default function Landing() {
         <SmokeBackdrop />
 
         {/* SCROLL PIECE — golden throne element with parallax lock */}
-        <section className="relative z-10 overflow-hidden">
+        <section className="relative z-10 min-h-[760px] overflow-hidden sm:min-h-[860px]">
           {/* Floating "Rezende" wordmarks — parallax background, syncs with throne reveal */}
           <RezendeFloaters />
           <div className="relative z-10 mx-auto max-w-6xl px-6 pt-20 pb-4 text-center sm:pt-24">
