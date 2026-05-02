@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Crown, ShieldCheck, Lock, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, ShieldCheck, Lock, Sparkles } from "lucide-react";
 import DottedSurface from "@/components/home/DottedSurface";
 import { PERFECTPAY_CHECKOUT_URL, goToCheckout } from "@/lib/checkout";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
 
 export default function Signup() {
   function handleCheckout(e: React.MouseEvent) {

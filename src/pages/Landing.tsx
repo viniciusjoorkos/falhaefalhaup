@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  Crown,
   Calendar,
   Wallet,
   Trophy,
@@ -17,6 +16,7 @@ import DottedSurface from "@/components/home/DottedSurface";
 import SmokeBackdrop from "@/components/home/SmokeBackdrop";
 import ScrollPiece from "@/components/home/ScrollPiece";
 import RezendeFloaters from "@/components/home/RezendeFloaters";
+import Logo from "@/components/Logo";
 import timelineImg from "@/assets/student-timeline.jpg";
 import lanhouseImg from "@/assets/lanhouse-rezende.jpg";
 

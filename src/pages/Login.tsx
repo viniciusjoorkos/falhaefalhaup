@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { ArrowLeft, ArrowRight, Crown, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import DottedSurface from "@/components/home/DottedSurface";
+import Logo from "@/components/Logo";
 
 export default function Login() {
   const { login } = useAuth();

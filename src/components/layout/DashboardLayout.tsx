@@ -12,6 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Logo from "@/components/Logo";
 
 const navItems = [
   { to: "/app", label: "Home", icon: Home, end: true },
