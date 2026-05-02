@@ -100,8 +100,8 @@ export default function RezendeFloaters() {
         return (
           <img
             key={i}
-            src={f.src}
-            srcSet={`${rezendeSm} 160w, ${rezendeMd} 280w, ${rezendeLg} 480w`}
+            src={rezendeLg}
+            srcSet={`${rezendeSm} 240w, ${rezendeMd} 420w, ${rezendeLg} 720w`}
             sizes={`${f.size}px`}
             alt=""
             loading="lazy"
