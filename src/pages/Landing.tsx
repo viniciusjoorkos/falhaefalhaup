@@ -349,16 +349,19 @@ export default function Landing() {
                   <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-[radial-gradient(50%_60%_at_50%_50%,rgba(212,175,55,0.18),transparent_70%)] blur-2xl" />
                   <div className="overflow-hidden rounded-2xl ring-1 ring-white/10 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.6)]">
                     <img
-                      src={chessImg}
-                      alt="Trono real dourado — símbolo do trader rei"
-                      width={1024}
-                      height={1280}
+                      src={lanhouseImg}
+                      alt="Rezende Trader Studio — sala premium com 16 estações de operação"
+                      width={1536}
+                      height={896}
                       loading="lazy"
                       className="aspect-[4/5] w-full object-cover"
                     />
                   </div>
-                  <div className="absolute -bottom-3 left-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.28em] text-white/60 backdrop-blur">
-                    <span className="h-1 w-1 rounded-full bg-amber-400" /> 02 — Premium
+                  {/* Premium badge — destaque, sem bolinha amarela */}
+                  <div className="absolute -top-3 left-6 inline-flex items-center gap-2 rounded-md border border-amber-300/40 bg-gradient-to-b from-amber-300 to-amber-500 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.32em] text-neutral-900 shadow-[0_8px_24px_-8px_rgba(212,175,55,0.6)]">
+                    <span className="font-mono">02</span>
+                    <span className="h-3 w-px bg-neutral-900/30" />
+                    <span>Premium</span>
                   </div>
                 </div>
 
