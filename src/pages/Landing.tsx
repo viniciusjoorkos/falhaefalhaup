@@ -19,6 +19,7 @@ import RezendeFloaters from "@/components/home/RezendeFloaters";
 import Logo from "@/components/Logo";
 import timelineImg from "@/assets/student-timeline.jpg";
 import lanhouseImg from "@/assets/lanhouse-rezende.jpg";
+import rezendeHistoriaImg from "@/assets/rezende-historia.webp";
 
 export default function Landing() {
   return (
