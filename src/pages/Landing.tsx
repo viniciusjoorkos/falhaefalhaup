@@ -276,21 +276,31 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* STATS only */}
+          {/* STATS — premium editorial, horizontal em todos breakpoints */}
           <div className="order-1 lg:order-2">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
-              <div>
-                <p className="font-serif text-4xl font-light text-neutral-900 sm:text-5xl">7+5</p>
-                <p className="mt-2 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Lives grátis · premium</p>
-              </div>
-              <div>
-                <p className="font-serif text-4xl font-light text-neutral-900 sm:text-5xl">92%</p>
-                <p className="mt-2 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Payout médio</p>
-              </div>
-              <div>
-                <p className="font-serif text-4xl font-light text-neutral-900 sm:text-5xl">0</p>
-                <p className="mt-2 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Promessa fácil</p>
-              </div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-5">
+              {[
+                { k: "7+5", l: "Lives", s: "Grátis · Premium" },
+                { k: "92", u: "%", l: "Payout", s: "Média semanal" },
+                { k: "0", l: "Hype", s: "Só método" },
+              ].map((m) => (
+                <div
+                  key={m.l}
+                  className="group relative overflow-hidden rounded-xl border border-neutral-200/80 bg-gradient-to-b from-white to-neutral-50/60 p-3 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_10px_30px_-18px_rgba(0,0,0,0.18)] sm:p-5"
+                >
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+                  <p className="font-mono text-[8px] uppercase tracking-[0.28em] text-amber-700/80 sm:text-[9px]">
+                    {m.l}
+                  </p>
+                  <p className="mt-1.5 flex items-baseline font-serif text-2xl font-light leading-none text-neutral-900 sm:mt-3 sm:text-5xl">
+                    {m.k}
+                    {m.u && <span className="ml-0.5 text-base text-neutral-400 sm:text-2xl">{m.u}</span>}
+                  </p>
+                  <p className="mt-1.5 text-[9px] leading-tight text-neutral-500 sm:mt-3 sm:text-[11px]">
+                    {m.s}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
