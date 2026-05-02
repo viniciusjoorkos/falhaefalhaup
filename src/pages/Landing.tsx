@@ -210,11 +210,10 @@ export default function Landing() {
             <br />
             <span className="italic text-amber-700">em live.</span>
           </h3>
-          <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.5em] text-neutral-500 sm:tracking-[0.6em]">
-            Rezende
-            <br className="sm:hidden" />
-            <span className="mx-2 text-neutral-300">·</span>
-            fez história
+          <p className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.5em] text-neutral-500 sm:tracking-[0.6em]">
+            <span>Rezende</span>
+            <span aria-hidden className="text-neutral-300">·</span>
+            <span>fez história</span>
           </p>
         </div>
       </section>
