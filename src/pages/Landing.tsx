@@ -271,28 +271,87 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* PILLARS */}
-      <section className="border-t border-neutral-200/80 bg-neutral-50/40">
-        <div className="mx-auto max-w-6xl px-6 pt-16 text-center sm:pt-20">
-          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-amber-700/80">O essencial</p>
-          <h2 className="mx-auto mt-3 max-w-xl font-serif text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
-            Tudo que você precisa.
-            <span className="text-neutral-400"> Nada além.</span>
-          </h2>
-        </div>
-        <div className="mx-auto mt-10 grid max-w-6xl gap-px bg-neutral-200/70 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { icon: Calendar, t: "Lives diárias", d: "Opere CALL/PUT junto com o expert, em tempo real." },
-            { icon: Wallet, t: "Banca sob controle", d: "P&L automático. Stop antes do tilt." },
-            { icon: Target, t: "Sinais com leitura", d: "Entrada, expiração e contexto — não palpite." },
-            { icon: ShieldCheck, t: "Sem promessa fácil", d: "Método. Disciplina. Repetição." },
-          ].map((f) => (
-            <div key={f.t} className="bg-white p-7">
-              <f.icon className="h-4 w-4 text-amber-600" strokeWidth={1.5} />
-              <h3 className="mt-3.5 text-[13px] font-semibold tracking-tight text-neutral-900">{f.t}</h3>
-              <p className="mt-1 text-[12.5px] leading-relaxed text-neutral-500">{f.d}</p>
+      {/* PILLARS — editorial premium */}
+      <section className="relative overflow-hidden border-t border-neutral-200/80 bg-gradient-to-b from-white via-neutral-50/60 to-white">
+        {/* hairline accent */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+        <div className="mx-auto max-w-6xl px-6 pt-20 sm:pt-28">
+          {/* Heading row — editorial */}
+          <div className="grid items-end gap-8 sm:grid-cols-12">
+            <div className="sm:col-span-7">
+              <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-amber-700/80">
+                <span className="mr-3 text-neutral-400">/ 03</span>O essencial
+              </p>
+              <h2 className="mt-5 font-serif text-[34px] font-light leading-[1.05] tracking-tight text-neutral-900 sm:text-5xl">
+                Tudo que você precisa.
+                <br />
+                <span className="italic text-neutral-400">Nada além.</span>
+              </h2>
             </div>
-          ))}
+            <div className="sm:col-span-5">
+              <p className="max-w-sm text-[13px] leading-relaxed text-neutral-500 sm:ml-auto sm:text-right">
+                Quatro pilares. Sem ruído, sem promessa milagrosa — apenas o suficiente para operar
+                <span className="text-neutral-900"> com método </span>
+                todos os dias.
+              </p>
+            </div>
+          </div>
+
+          {/* Pillars grid */}
+          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-neutral-200/80 bg-neutral-200/70 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.18)] sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                n: "01",
+                t: "Lives diárias",
+                d: "Opere CALL/PUT em tempo real ao lado do expert. Leitura de mercado em voz alta.",
+                tag: "Tempo real",
+              },
+              {
+                n: "02",
+                t: "Banca sob controle",
+                d: "P&L automático, alertas de tilt e stop dinâmico. A disciplina que separa quem fica.",
+                tag: "Risco",
+              },
+              {
+                n: "03",
+                t: "Sinais com leitura",
+                d: "Entrada, expiração e contexto técnico. Você entende o porquê — não chuta.",
+                tag: "Contexto",
+              },
+              {
+                n: "04",
+                t: "Sem promessa fácil",
+                d: "Método, repetição, paciência. Resultado é consequência — nunca slogan.",
+                tag: "Honestidade",
+              },
+            ].map((f) => (
+              <article
+                key={f.n}
+                className="group relative isolate overflow-hidden bg-white p-7 transition-colors duration-500 hover:bg-neutral-50/70 sm:p-9"
+              >
+                {/* hover gold halo */}
+                <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_60%_at_50%_0%,rgba(212,175,55,0.07),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="flex items-baseline justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-amber-700/80">
+                    {f.n}
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-neutral-400">
+                    {f.tag}
+                  </span>
+                </div>
+                <div className="mt-8 h-px w-8 bg-neutral-900/80 transition-all duration-500 group-hover:w-14 group-hover:bg-amber-600" />
+                <h3 className="mt-5 font-serif text-[22px] font-light leading-tight tracking-tight text-neutral-900 sm:text-[26px]">
+                  {f.t}
+                </h3>
+                <p className="mt-3 text-[12.5px] leading-relaxed text-neutral-500">{f.d}</p>
+              </article>
+            ))}
+          </div>
+
+          {/* footnote */}
+          <p className="mx-auto mt-10 max-w-md pb-20 text-center font-mono text-[10px] uppercase tracking-[0.32em] text-neutral-400 sm:mt-14 sm:pb-28">
+            Operação · Risco · Contexto · Honestidade
+          </p>
         </div>
       </section>
 
