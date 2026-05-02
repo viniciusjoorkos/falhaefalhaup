@@ -17,8 +17,8 @@ import DottedSurface from "@/components/home/DottedSurface";
 import SmokeBackdrop from "@/components/home/SmokeBackdrop";
 import ScrollPiece from "@/components/home/ScrollPiece";
 import RezendeFloaters from "@/components/home/RezendeFloaters";
-import ironmanImg from "@/assets/ironman-trading.png";
-import chessImg from "@/assets/club-chess.jpg";
+import timelineImg from "@/assets/student-timeline.jpg";
+import lanhouseImg from "@/assets/lanhouse-rezende.jpg";
 
 export default function Landing() {
   return (
