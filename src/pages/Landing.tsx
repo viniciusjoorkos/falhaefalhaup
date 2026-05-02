@@ -346,16 +346,24 @@ export default function Landing() {
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(40%_50%_at_20%_30%,rgba(212,175,55,0.12),transparent_70%)]" />
               <div className="relative grid items-center gap-10 px-6 py-20 sm:px-10 lg:grid-cols-12 lg:gap-14 lg:py-28">
                 <div className="relative lg:col-span-5">
-                  <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-[radial-gradient(50%_60%_at_50%_50%,rgba(212,175,55,0.18),transparent_70%)] blur-2xl" />
-                  <div className="overflow-hidden rounded-2xl ring-1 ring-white/10 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.6)]">
+                  {/* Premium ambient glow loop */}
+                  <div aria-hidden className="pointer-events-none absolute -inset-10 -z-10 overflow-hidden rounded-[2.5rem]">
+                    <div className="absolute inset-0 rounded-[2.5rem] bg-[radial-gradient(60%_60%_at_50%_50%,rgba(212,175,55,0.22),transparent_70%)] blur-3xl animate-premium-pulse" />
+                    <div className="absolute -inset-[40%] rounded-full bg-[conic-gradient(from_0deg,transparent_0deg,rgba(212,175,55,0.18)_60deg,transparent_140deg,transparent_360deg)] blur-2xl animate-premium-spin" />
+                    <div className="absolute inset-0 rounded-[2.5rem] bg-[radial-gradient(40%_40%_at_80%_20%,rgba(255,210,120,0.18),transparent_60%)] blur-2xl animate-premium-glow-b" />
+                  </div>
+                  <div className="relative overflow-hidden rounded-2xl ring-1 ring-amber-300/15 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.7)]">
                     <img
                       src={lanhouseImg}
-                      alt="Rezende Trader Studio — sala premium com 16 estações de operação"
+                      alt="Rezende Trader Studio — sala premium com estações de operação"
                       width={1536}
                       height={896}
                       loading="lazy"
-                      className="aspect-[4/5] w-full object-cover"
+                      className="aspect-[16/10] w-full object-cover"
                     />
+                    {/* Subtle sheen sweep */}
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,transparent_30%,rgba(255,220,150,0.10)_50%,transparent_70%)] bg-[length:250%_100%] animate-premium-sheen" />
+                    <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   </div>
                   {/* Premium badge — destaque, sem bolinha amarela */}
                   <div className="absolute -top-3 left-6 inline-flex items-center gap-2 rounded-md border border-amber-300/40 bg-gradient-to-b from-amber-300 to-amber-500 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.32em] text-neutral-900 shadow-[0_8px_24px_-8px_rgba(212,175,55,0.6)]">
