@@ -301,7 +301,7 @@ export default function Landing() {
       <div className="relative isolate overflow-hidden bg-white">
         <SmokeBackdrop />
 
-        {/* SCROLL PIECE — golden chess element with parallax lock */}
+        {/* SCROLL PIECE — golden throne element with parallax lock */}
         <section className="relative z-10">
           <div className="mx-auto max-w-6xl px-6 pt-20 pb-4 text-center sm:pt-24">
             <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-amber-700/80">
@@ -343,7 +343,7 @@ export default function Landing() {
                   <div className="overflow-hidden rounded-2xl ring-1 ring-white/10 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.6)]">
                     <img
                       src={chessImg}
-                      alt="Peça de xadrez dourada — estratégia premium"
+                      alt="Trono real dourado — símbolo do trader rei"
                       width={1024}
                       height={1280}
                       loading="lazy"
