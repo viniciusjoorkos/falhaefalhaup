@@ -33,13 +33,8 @@ export default function Landing() {
         {/* Header */}
         <header className="relative z-10">
           <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16 sm:px-6">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md border border-amber-500/30 bg-black/40">
-                <Crown className="h-3.5 w-3.5 text-amber-400" />
-              </div>
-              <span className="font-serif text-[11px] tracking-[0.28em] text-white/90 sm:text-[12px]">
-                RZ&nbsp;TRADER&nbsp;STUDIO
-              </span>
+            <Link to="/" className="flex items-center" aria-label="RZ Trader Studio">
+              <Logo className="h-5 sm:h-6" />
             </Link>
             <nav className="flex items-center gap-1.5 text-xs sm:gap-2">
               <Link
@@ -447,10 +442,7 @@ export default function Landing() {
           <div className="mx-auto max-w-6xl px-6 py-10">
             {/* Top row: brand + links */}
             <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-              <div className="flex items-center gap-2">
-                <Crown className="h-3 w-3 text-amber-400" />
-                <span className="text-[11px] tracking-[0.28em] text-white/80">RZ TRADER STUDIO</span>
-              </div>
+              <Logo className="h-4" />
               <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px]">
                 <Link to="/privacidade" className="transition hover:text-white">Política de Privacidade</Link>
                 <span className="hidden h-1 w-1 rounded-full bg-white/15 sm:inline-block" />

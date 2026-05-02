@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { Crown, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import Logo from "@/components/Logo";
 
 export default function Privacy() {
   return (
     <div className="min-h-screen bg-white text-neutral-900">
       <header className="border-b border-neutral-200/70">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <Crown className="h-3.5 w-3.5 text-amber-500" />
-            <span className="font-serif text-[12px] tracking-[0.28em]">RZ TRADER STUDIO</span>
+          <Link to="/" className="flex items-center" aria-label="RZ Trader Studio">
+            <Logo className="h-5" invert={false} />
           </Link>
           <Link to="/" className="inline-flex items-center gap-1 text-[12px] text-neutral-500 hover:text-neutral-900">
             <ArrowLeft className="h-3.5 w-3.5" /> Início
