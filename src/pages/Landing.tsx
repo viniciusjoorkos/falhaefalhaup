@@ -227,53 +227,23 @@ export default function Landing() {
       {/* EDITORIAL split — Iron-Man styled HUD + 3 stats */}
       <section className="relative overflow-hidden border-t border-neutral-200/70 bg-white">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
-          {/* IMAGE with smoke loop */}
+          {/* IMAGE — student timeline */}
           <div className="relative order-2 lg:order-1">
-            <div className="relative aspect-square w-full">
-              {/* Smoke loop — pure CSS, GPU-only */}
-              <div aria-hidden className="absolute inset-0 -z-0">
-                <div
-                  className="absolute left-1/2 top-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 will-change-transform"
-                  style={{
-                    background:
-                      "radial-gradient(closest-side, hsl(15 90% 55% / 0.40), hsl(0 0% 0% / 0) 65%)",
-                    filter: "blur(50px)",
-                    animation: "smoke-drift-a 18s ease-in-out infinite",
-                  }}
-                />
-                <div
-                  className="absolute left-1/2 top-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 will-change-transform"
-                  style={{
-                    background:
-                      "radial-gradient(closest-side, hsl(200 95% 55% / 0.35), hsl(220 80% 40% / 0) 65%)",
-                    filter: "blur(55px)",
-                    animation: "smoke-drift-b 22s ease-in-out infinite",
-                    animationDelay: "-7s",
-                  }}
-                />
-                <div
-                  className="absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 will-change-transform"
-                  style={{
-                    background:
-                      "radial-gradient(closest-side, hsl(43 90% 55% / 0.30), transparent 70%)",
-                    filter: "blur(40px)",
-                    animation: "smoke-drift-a 26s ease-in-out infinite",
-                    animationDelay: "-12s",
-                  }}
-                />
-              </div>
-
+            <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-[0_30px_80px_-30px_rgba(0,0,0,0.18)]">
               <img
-                src={ironmanImg}
-                alt="HUD de opções binárias estilo arc reactor — CALL e PUT"
-                width={1024}
-                height={1024}
+                src={timelineImg}
+                alt="Linha do tempo do aluno: do início ao Studio Max"
+                width={1536}
+                height={896}
                 loading="lazy"
-                className="relative z-10 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
+                className="block h-auto w-full object-contain"
               />
             </div>
-            <div className="absolute -bottom-3 left-6 z-20 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-3 py-1.5 text-[10px] uppercase tracking-[0.28em] text-neutral-500 backdrop-blur">
-              <span className="h-1 w-1 rounded-full bg-amber-500" /> 01 — Arsenal
+            {/* Premium badge — destaque, sem bolinha amarela */}
+            <div className="absolute -top-3 left-6 z-20 inline-flex items-center gap-2 rounded-md border border-neutral-900/90 bg-neutral-900 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.32em] text-amber-300 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]">
+              <span className="font-mono text-amber-400">01</span>
+              <span className="h-3 w-px bg-amber-300/40" />
+              <span className="text-white/90">Arsenal</span>
             </div>
           </div>
 
