@@ -16,6 +16,7 @@ import {
 import DottedSurface from "@/components/home/DottedSurface";
 import SmokeBackdrop from "@/components/home/SmokeBackdrop";
 import ScrollPiece from "@/components/home/ScrollPiece";
+import RezendeFloaters from "@/components/home/RezendeFloaters";
 import ironmanImg from "@/assets/ironman-trading.png";
 import chessImg from "@/assets/club-chess.jpg";
 
@@ -336,8 +337,10 @@ export default function Landing() {
         <SmokeBackdrop />
 
         {/* SCROLL PIECE — golden throne element with parallax lock */}
-        <section className="relative z-10">
-          <div className="mx-auto max-w-6xl px-6 pt-20 pb-4 text-center sm:pt-24">
+        <section className="relative z-10 overflow-hidden">
+          {/* Floating "Rezende" wordmarks — parallax background, syncs with throne reveal */}
+          <RezendeFloaters />
+          <div className="relative z-10 mx-auto max-w-6xl px-6 pt-20 pb-4 text-center sm:pt-24">
             <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-amber-700/80">
               Estratégia
             </p>
