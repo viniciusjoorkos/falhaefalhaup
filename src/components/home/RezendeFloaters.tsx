@@ -33,12 +33,12 @@ type Floater = {
 };
 
 const FLOATERS: Floater[] = [
-  { top: "6%",  left: "4%",  size: 150, rot: -8,  depth:  0.35, opacity: 0.10, src: rezendeMd },
-  { top: "18%", left: "72%", size:  90, rot: 14,  depth: -0.25, opacity: 0.09, src: rezendeSm },
-  { top: "44%", left: "82%", size: 120, rot: -3,  depth:  0.45, opacity: 0.11, src: rezendeMd },
-  { top: "58%", left: "8%",  size:  80, rot: 22,  depth: -0.30, opacity: 0.08, src: rezendeSm },
-  { top: "78%", left: "60%", size: 200, rot: -6,  depth:  0.55, opacity: 0.12, src: rezendeLg },
-  { top: "86%", left: "22%", size: 110, rot: 10,  depth: -0.40, opacity: 0.10, src: rezendeMd },
+  { top: "4%",  left: "3%",  size: 130, rot: -8,  depth:  0.35, opacity: 0.22, src: rezendeMd },
+  { top: "16%", left: "70%", size:  90, rot: 16,  depth: -0.28, opacity: 0.20, src: rezendeSm },
+  { top: "40%", left: "80%", size: 110, rot: -4,  depth:  0.45, opacity: 0.24, src: rezendeMd },
+  { top: "55%", left: "6%",  size:  80, rot: 24,  depth: -0.32, opacity: 0.18, src: rezendeSm },
+  { top: "74%", left: "58%", size: 180, rot: -6,  depth:  0.55, opacity: 0.30, src: rezendeLg },
+  { top: "84%", left: "20%", size: 100, rot: 10,  depth: -0.40, opacity: 0.22, src: rezendeMd },
 ];
 
 export default function RezendeFloaters() {
@@ -93,7 +93,7 @@ export default function RezendeFloaters() {
     <div
       ref={ref}
       aria-hidden
-      className="pointer-events-none absolute inset-0 overflow-hidden motion-reduce:hidden"
+      className="pointer-events-none absolute inset-0 z-[1] overflow-hidden"
     >
       {FLOATERS.map((f, i) => {
         const ty = offset * f.depth;
