@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Crown, ShieldCheck, Lock, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, ShieldCheck, Lock, Sparkles } from "lucide-react";
 import DottedSurface from "@/components/home/DottedSurface";
 import { PERFECTPAY_CHECKOUT_URL, goToCheckout } from "@/lib/checkout";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
 
 export default function Signup() {
   function handleCheckout(e: React.MouseEvent) {
@@ -32,13 +33,8 @@ export default function Signup() {
           >
             <ArrowLeft className="h-3 w-3" /> Voltar
           </Link>
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md border border-amber-500/30 bg-black/40">
-              <Crown className="h-3.5 w-3.5 text-amber-400" />
-            </div>
-            <span className="font-serif text-[11px] tracking-[0.28em] text-white/90 sm:text-[12px]">
-              RZ&nbsp;TRADER&nbsp;STUDIO
-            </span>
+          <Link to="/" className="flex items-center" aria-label="RZ Trader Studio">
+            <Logo className="h-5 sm:h-6" />
           </Link>
         </div>
       </header>

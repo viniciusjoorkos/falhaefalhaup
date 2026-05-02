@@ -12,6 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Logo from "@/components/Logo";
 
 const navItems = [
   { to: "/app", label: "Home", icon: Home, end: true },
@@ -44,14 +45,9 @@ export default function DashboardLayout() {
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-glow">
-            <Crown className="h-5 w-5" />
-          </div>
-          <div>
-            <p className="text-sm font-bold tracking-tight">RZ TRADER STUDIO</p>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Premium Trading Studio</p>
-          </div>
+        <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-5">
+          <Logo className="h-5" />
+          <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Premium</p>
         </div>
 
         <nav className="flex flex-col gap-1 p-3">

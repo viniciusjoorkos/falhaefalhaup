@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { ArrowLeft, ArrowRight, Crown, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import DottedSurface from "@/components/home/DottedSurface";
+import Logo from "@/components/Logo";
 
 export default function Login() {
   const { login } = useAuth();
@@ -42,13 +43,8 @@ export default function Login() {
           >
             <ArrowLeft className="h-3 w-3" /> Voltar
           </Link>
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md border border-amber-500/30 bg-black/40">
-              <Crown className="h-3.5 w-3.5 text-amber-400" />
-            </div>
-            <span className="font-serif text-[11px] tracking-[0.28em] text-white/90 sm:text-[12px]">
-              RZ&nbsp;TRADER&nbsp;STUDIO
-            </span>
+          <Link to="/" className="flex items-center" aria-label="RZ Trader Studio">
+            <Logo className="h-5 sm:h-6" />
           </Link>
         </div>
       </header>
