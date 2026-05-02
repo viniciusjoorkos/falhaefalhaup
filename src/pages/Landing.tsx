@@ -17,8 +17,8 @@ import DottedSurface from "@/components/home/DottedSurface";
 import SmokeBackdrop from "@/components/home/SmokeBackdrop";
 import ScrollPiece from "@/components/home/ScrollPiece";
 import RezendeFloaters from "@/components/home/RezendeFloaters";
-import ironmanImg from "@/assets/ironman-trading.png";
-import chessImg from "@/assets/club-chess.jpg";
+import timelineImg from "@/assets/student-timeline.jpg";
+import lanhouseImg from "@/assets/lanhouse-rezende.jpg";
 
 export default function Landing() {
   return (
@@ -227,53 +227,23 @@ export default function Landing() {
       {/* EDITORIAL split — Iron-Man styled HUD + 3 stats */}
       <section className="relative overflow-hidden border-t border-neutral-200/70 bg-white">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
-          {/* IMAGE with smoke loop */}
+          {/* IMAGE — student timeline */}
           <div className="relative order-2 lg:order-1">
-            <div className="relative aspect-square w-full">
-              {/* Smoke loop — pure CSS, GPU-only */}
-              <div aria-hidden className="absolute inset-0 -z-0">
-                <div
-                  className="absolute left-1/2 top-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 will-change-transform"
-                  style={{
-                    background:
-                      "radial-gradient(closest-side, hsl(15 90% 55% / 0.40), hsl(0 0% 0% / 0) 65%)",
-                    filter: "blur(50px)",
-                    animation: "smoke-drift-a 18s ease-in-out infinite",
-                  }}
-                />
-                <div
-                  className="absolute left-1/2 top-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 will-change-transform"
-                  style={{
-                    background:
-                      "radial-gradient(closest-side, hsl(200 95% 55% / 0.35), hsl(220 80% 40% / 0) 65%)",
-                    filter: "blur(55px)",
-                    animation: "smoke-drift-b 22s ease-in-out infinite",
-                    animationDelay: "-7s",
-                  }}
-                />
-                <div
-                  className="absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 will-change-transform"
-                  style={{
-                    background:
-                      "radial-gradient(closest-side, hsl(43 90% 55% / 0.30), transparent 70%)",
-                    filter: "blur(40px)",
-                    animation: "smoke-drift-a 26s ease-in-out infinite",
-                    animationDelay: "-12s",
-                  }}
-                />
-              </div>
-
+            <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-[0_30px_80px_-30px_rgba(0,0,0,0.18)]">
               <img
-                src={ironmanImg}
-                alt="HUD de opções binárias estilo arc reactor — CALL e PUT"
-                width={1024}
-                height={1024}
+                src={timelineImg}
+                alt="Linha do tempo do aluno: do início ao Studio Max"
+                width={1536}
+                height={896}
                 loading="lazy"
-                className="relative z-10 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
+                className="block h-auto w-full object-contain"
               />
             </div>
-            <div className="absolute -bottom-3 left-6 z-20 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-3 py-1.5 text-[10px] uppercase tracking-[0.28em] text-neutral-500 backdrop-blur">
-              <span className="h-1 w-1 rounded-full bg-amber-500" /> 01 — Arsenal
+            {/* Premium badge — destaque, sem bolinha amarela */}
+            <div className="absolute -top-3 left-6 z-20 inline-flex items-center gap-2 rounded-md border border-neutral-900/90 bg-neutral-900 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.32em] text-amber-300 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]">
+              <span className="font-mono text-amber-400">01</span>
+              <span className="h-3 w-px bg-amber-300/40" />
+              <span className="text-white/90">Arsenal</span>
             </div>
           </div>
 
@@ -379,16 +349,19 @@ export default function Landing() {
                   <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-[radial-gradient(50%_60%_at_50%_50%,rgba(212,175,55,0.18),transparent_70%)] blur-2xl" />
                   <div className="overflow-hidden rounded-2xl ring-1 ring-white/10 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.6)]">
                     <img
-                      src={chessImg}
-                      alt="Trono real dourado — símbolo do trader rei"
-                      width={1024}
-                      height={1280}
+                      src={lanhouseImg}
+                      alt="Rezende Trader Studio — sala premium com 16 estações de operação"
+                      width={1536}
+                      height={896}
                       loading="lazy"
                       className="aspect-[4/5] w-full object-cover"
                     />
                   </div>
-                  <div className="absolute -bottom-3 left-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.28em] text-white/60 backdrop-blur">
-                    <span className="h-1 w-1 rounded-full bg-amber-400" /> 02 — Premium
+                  {/* Premium badge — destaque, sem bolinha amarela */}
+                  <div className="absolute -top-3 left-6 inline-flex items-center gap-2 rounded-md border border-amber-300/40 bg-gradient-to-b from-amber-300 to-amber-500 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.32em] text-neutral-900 shadow-[0_8px_24px_-8px_rgba(212,175,55,0.6)]">
+                    <span className="font-mono">02</span>
+                    <span className="h-3 w-px bg-neutral-900/30" />
+                    <span>Premium</span>
                   </div>
                 </div>
 
@@ -462,18 +435,48 @@ export default function Landing() {
         </section>
 
         {/* FOOTER — black, blends with smoke bottom */}
-        <footer className="relative z-10 bg-black text-white/60">
-          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-7 text-[11px] sm:flex-row">
-            <div className="flex items-center gap-2">
-              <Crown className="h-3 w-3 text-amber-400" />
-              <span className="tracking-[0.24em]">RZ TRADER STUDIO</span>
+        <footer className="relative z-10 border-t border-white/5 bg-black text-white/55">
+          <div className="mx-auto max-w-6xl px-6 py-10">
+            {/* Top row: brand + links */}
+            <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+              <div className="flex items-center gap-2">
+                <Crown className="h-3 w-3 text-amber-400" />
+                <span className="text-[11px] tracking-[0.28em] text-white/80">RZ TRADER STUDIO</span>
+              </div>
+              <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px]">
+                <Link to="/privacidade" className="transition hover:text-white">Política de Privacidade</Link>
+                <span className="hidden h-1 w-1 rounded-full bg-white/15 sm:inline-block" />
+                <Link to="/termos" className="transition hover:text-white">Política de Uso</Link>
+                <span className="hidden h-1 w-1 rounded-full bg-white/15 sm:inline-block" />
+                <a href="mailto:contato@falhaéfalha.online" className="transition hover:text-white">
+                  contato@falhaéfalha.online
+                </a>
+              </nav>
             </div>
-            <p className="text-center sm:text-right">
-              © {new Date().getFullYear()} RZ Trader Studio. Trading envolve risco. Resultados passados não garantem futuros.
+
+            {/* Minimal honest disclaimer */}
+            <p className="mt-8 max-w-3xl text-[11px] leading-relaxed text-white/45">
+              Não garantimos resultados. Aplicamos um método de forma diária — você também pode aplicá-lo, e os
+              resultados serão sempre individuais, dependendo de disciplina, contexto de mercado e gestão própria.
             </p>
+
+            {/* Legal isolation */}
+            <p className="mt-4 max-w-3xl text-[10.5px] leading-relaxed text-white/35">
+              Este site não é afiliado, endossado, patrocinado ou administrado pela Meta Platforms, Inc.
+              (Facebook / Instagram), Google LLC, TikTok ou qualquer outra rede de anúncios. Todo o conteúdo,
+              ofertas e comunicações aqui veiculados são de responsabilidade exclusiva deste site. Operações em
+              opções binárias envolvem alto risco e podem resultar em perda total do capital. Resultados passados
+              não garantem retornos futuros.
+            </p>
+
+            <div className="mt-8 flex flex-col items-start justify-between gap-2 border-t border-white/5 pt-5 text-[10.5px] text-white/35 sm:flex-row sm:items-center">
+              <span>© {new Date().getFullYear()} RZ Trader Studio · Todos os direitos reservados.</span>
+              <span>contato@falhaéfalha.online</span>
+            </div>
           </div>
         </footer>
       </div>
+
 
     </div>
   );
