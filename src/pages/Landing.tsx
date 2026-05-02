@@ -435,18 +435,48 @@ export default function Landing() {
         </section>
 
         {/* FOOTER — black, blends with smoke bottom */}
-        <footer className="relative z-10 bg-black text-white/60">
-          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-7 text-[11px] sm:flex-row">
-            <div className="flex items-center gap-2">
-              <Crown className="h-3 w-3 text-amber-400" />
-              <span className="tracking-[0.24em]">RZ TRADER STUDIO</span>
+        <footer className="relative z-10 border-t border-white/5 bg-black text-white/55">
+          <div className="mx-auto max-w-6xl px-6 py-10">
+            {/* Top row: brand + links */}
+            <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+              <div className="flex items-center gap-2">
+                <Crown className="h-3 w-3 text-amber-400" />
+                <span className="text-[11px] tracking-[0.28em] text-white/80">RZ TRADER STUDIO</span>
+              </div>
+              <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px]">
+                <Link to="/privacidade" className="transition hover:text-white">Política de Privacidade</Link>
+                <span className="hidden h-1 w-1 rounded-full bg-white/15 sm:inline-block" />
+                <Link to="/termos" className="transition hover:text-white">Política de Uso</Link>
+                <span className="hidden h-1 w-1 rounded-full bg-white/15 sm:inline-block" />
+                <a href="mailto:contato@falhaéfalha.online" className="transition hover:text-white">
+                  contato@falhaéfalha.online
+                </a>
+              </nav>
             </div>
-            <p className="text-center sm:text-right">
-              © {new Date().getFullYear()} RZ Trader Studio. Trading envolve risco. Resultados passados não garantem futuros.
+
+            {/* Minimal honest disclaimer */}
+            <p className="mt-8 max-w-3xl text-[11px] leading-relaxed text-white/45">
+              Não garantimos resultados. Aplicamos um método de forma diária — você também pode aplicá-lo, e os
+              resultados serão sempre individuais, dependendo de disciplina, contexto de mercado e gestão própria.
             </p>
+
+            {/* Legal isolation */}
+            <p className="mt-4 max-w-3xl text-[10.5px] leading-relaxed text-white/35">
+              Este site não é afiliado, endossado, patrocinado ou administrado pela Meta Platforms, Inc.
+              (Facebook / Instagram), Google LLC, TikTok ou qualquer outra rede de anúncios. Todo o conteúdo,
+              ofertas e comunicações aqui veiculados são de responsabilidade exclusiva deste site. Operações em
+              opções binárias envolvem alto risco e podem resultar em perda total do capital. Resultados passados
+              não garantem retornos futuros.
+            </p>
+
+            <div className="mt-8 flex flex-col items-start justify-between gap-2 border-t border-white/5 pt-5 text-[10.5px] text-white/35 sm:flex-row sm:items-center">
+              <span>© {new Date().getFullYear()} RZ Trader Studio · Todos os direitos reservados.</span>
+              <span>contato@falhaéfalha.online</span>
+            </div>
           </div>
         </footer>
       </div>
+
 
     </div>
   );
