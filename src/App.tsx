@@ -20,6 +20,8 @@ import Depoimentos from "./pages/app/Depoimentos";
 import Perfil from "./pages/app/Perfil";
 import Admin from "./pages/app/Admin";
 import Premium from "./pages/app/Premium";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +36,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/privacidade" element={<Privacy />} />
+            <Route path="/termos" element={<Terms />} />
 
             <Route
               path="/app"
