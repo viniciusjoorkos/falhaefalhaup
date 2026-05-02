@@ -16,7 +16,7 @@ import {
 import DottedSurface from "@/components/home/DottedSurface";
 import SmokeBackdrop from "@/components/home/SmokeBackdrop";
 import ScrollPiece from "@/components/home/ScrollPiece";
-import deskImg from "@/assets/club-desk.jpg";
+import ironmanImg from "@/assets/ironman-trading.png";
 import chessImg from "@/assets/club-chess.jpg";
 
 export default function Landing() {
@@ -223,49 +223,73 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* EDITORIAL split — image + statement */}
-      <section className="relative border-t border-neutral-200/70 bg-white">
+      {/* EDITORIAL split — Iron-Man styled HUD + 3 stats */}
+      <section className="relative overflow-hidden border-t border-neutral-200/70 bg-white">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
+          {/* IMAGE with smoke loop */}
           <div className="relative order-2 lg:order-1">
-            <div className="overflow-hidden rounded-2xl bg-neutral-900 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]">
+            <div className="relative aspect-square w-full">
+              {/* Smoke loop — pure CSS, GPU-only */}
+              <div aria-hidden className="absolute inset-0 -z-0">
+                <div
+                  className="absolute left-1/2 top-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 will-change-transform"
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, hsl(15 90% 55% / 0.40), hsl(0 0% 0% / 0) 65%)",
+                    filter: "blur(50px)",
+                    animation: "smoke-drift-a 18s ease-in-out infinite",
+                  }}
+                />
+                <div
+                  className="absolute left-1/2 top-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 will-change-transform"
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, hsl(200 95% 55% / 0.35), hsl(220 80% 40% / 0) 65%)",
+                    filter: "blur(55px)",
+                    animation: "smoke-drift-b 22s ease-in-out infinite",
+                    animationDelay: "-7s",
+                  }}
+                />
+                <div
+                  className="absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 will-change-transform"
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, hsl(43 90% 55% / 0.30), transparent 70%)",
+                    filter: "blur(40px)",
+                    animation: "smoke-drift-a 26s ease-in-out infinite",
+                    animationDelay: "-12s",
+                  }}
+                />
+              </div>
+
               <img
-                src={deskImg}
-                alt="Mesa de trabalho premium do clube"
-                width={1280}
-                height={896}
+                src={ironmanImg}
+                alt="HUD de opções binárias estilo arc reactor — CALL e PUT"
+                width={1024}
+                height={1024}
                 loading="lazy"
-                className="aspect-[10/7] w-full object-cover"
+                className="relative z-10 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
               />
             </div>
-            <div className="absolute -bottom-3 left-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-3 py-1.5 text-[10px] uppercase tracking-[0.28em] text-neutral-500 backdrop-blur">
-              <span className="h-1 w-1 rounded-full bg-amber-500" /> 01 — Método
+            <div className="absolute -bottom-3 left-6 z-20 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-3 py-1.5 text-[10px] uppercase tracking-[0.28em] text-neutral-500 backdrop-blur">
+              <span className="h-1 w-1 rounded-full bg-amber-500" /> 01 — Arsenal
             </div>
           </div>
 
+          {/* STATS only */}
           <div className="order-1 lg:order-2">
-            <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-amber-700/80">Por que existe</p>
-            <h2 className="mt-3 font-serif text-3xl font-light leading-[1.1] tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
-              O mercado não <br />
-              <span className="italic text-amber-700">perdoa improviso.</span>
-            </h2>
-            <p className="mt-5 max-w-md text-[14px] leading-relaxed text-neutral-500">
-              Aqui não tem grupo de Telegram, nem promessa de virada. Tem método, lives ao vivo e um único objetivo:
-              tornar a sua banca consistente em opções binárias.
-            </p>
-            <div className="mt-7 flex items-center gap-6">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
               <div>
-                <p className="font-serif text-3xl font-light text-neutral-900">7+5</p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Lives grátis · premium</p>
+                <p className="font-serif text-4xl font-light text-neutral-900 sm:text-5xl">7+5</p>
+                <p className="mt-2 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Lives grátis · premium</p>
               </div>
-              <div className="h-8 w-px bg-neutral-200" />
               <div>
-                <p className="font-serif text-3xl font-light text-neutral-900">92%</p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Payout médio</p>
+                <p className="font-serif text-4xl font-light text-neutral-900 sm:text-5xl">92%</p>
+                <p className="mt-2 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Payout médio</p>
               </div>
-              <div className="h-8 w-px bg-neutral-200" />
               <div>
-                <p className="font-serif text-3xl font-light text-neutral-900">0</p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Promessa fácil</p>
+                <p className="font-serif text-4xl font-light text-neutral-900 sm:text-5xl">0</p>
+                <p className="mt-2 text-[10px] uppercase tracking-[0.24em] text-neutral-400">Promessa fácil</p>
               </div>
             </div>
           </div>
