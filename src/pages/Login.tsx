@@ -47,7 +47,7 @@ export default function Login() {
               <Crown className="h-3.5 w-3.5 text-amber-400" />
             </div>
             <span className="font-serif text-[11px] tracking-[0.28em] text-white/90 sm:text-[12px]">
-              RZ&nbsp;TRADER&nbsp;STHUB
+              RZ&nbsp;TRADER&nbsp;STUDIO
             </span>
           </Link>
         </div>
@@ -125,7 +125,7 @@ export default function Login() {
           </p>
 
           <p className="mt-8 text-center font-mono text-[9px] uppercase tracking-[0.32em] text-white/25">
-            RZ Trader Sthub · acesso por convite
+            RZ Trader Studio · acesso por convite
           </p>
         </div>
       </main>

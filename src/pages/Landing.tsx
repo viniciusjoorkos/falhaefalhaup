@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import DottedSurface from "@/components/home/DottedSurface";
 import SmokeBackdrop from "@/components/home/SmokeBackdrop";
+import ScrollPiece from "@/components/home/ScrollPiece";
 import deskImg from "@/assets/club-desk.jpg";
 import chessImg from "@/assets/club-chess.jpg";
 
@@ -36,7 +37,7 @@ export default function Landing() {
                 <Crown className="h-3.5 w-3.5 text-amber-400" />
               </div>
               <span className="font-serif text-[11px] tracking-[0.28em] text-white/90 sm:text-[12px]">
-                RZ&nbsp;TRADER&nbsp;STHUB
+                RZ&nbsp;TRADER&nbsp;STUDIO
               </span>
             </Link>
             <nav className="flex items-center gap-1.5 text-xs sm:gap-2">
@@ -300,6 +301,20 @@ export default function Landing() {
       <div className="relative isolate overflow-hidden bg-white">
         <SmokeBackdrop />
 
+        {/* SCROLL PIECE — golden chess element with parallax lock */}
+        <section className="relative z-10">
+          <div className="mx-auto max-w-6xl px-6 pt-20 pb-4 text-center sm:pt-24">
+            <p className="font-mono text-[10px] uppercase tracking-[0.45em] text-amber-700/80">
+              Estratégia
+            </p>
+            <h2 className="mx-auto mt-3 max-w-xl font-serif text-2xl font-light tracking-tight text-neutral-900 sm:text-3xl">
+              Cada movimento.
+              <span className="text-neutral-400"> Calculado.</span>
+            </h2>
+            <ScrollPiece />
+          </div>
+        </section>
+
         {/* METRICS strip */}
         <section className="relative z-10 border-t border-neutral-200/60">
           <div className="mx-auto grid max-w-6xl grid-cols-2 divide-y divide-neutral-200/60 px-6 py-14 sm:grid-cols-4 sm:divide-x sm:divide-y-0 sm:py-16">
@@ -414,10 +429,10 @@ export default function Landing() {
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-7 text-[11px] sm:flex-row">
             <div className="flex items-center gap-2">
               <Crown className="h-3 w-3 text-amber-400" />
-              <span className="tracking-[0.24em]">RZ TRADER STHUB</span>
+              <span className="tracking-[0.24em]">RZ TRADER STUDIO</span>
             </div>
             <p className="text-center sm:text-right">
-              © {new Date().getFullYear()} RZ Trader Sthub. Trading envolve risco. Resultados passados não garantem futuros.
+              © {new Date().getFullYear()} RZ Trader Studio. Trading envolve risco. Resultados passados não garantem futuros.
             </p>
           </div>
         </footer>
