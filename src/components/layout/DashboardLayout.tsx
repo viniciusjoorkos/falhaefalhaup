@@ -49,8 +49,8 @@ export default function DashboardLayout() {
             <Crown className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm font-bold tracking-tight">REZENDE CLUB</p>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Trader's Lounge</p>
+            <p className="text-sm font-bold tracking-tight">RZ TRADER STUDIO</p>
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Premium Trading Studio</p>
           </div>
         </div>
 
@@ -227,5 +227,5 @@ function currentTitle(path: string): string {
   if (path.startsWith("/app/perfil")) return "Perfil";
   if (path.startsWith("/app/premium")) return "Lives Premium";
   if (path.startsWith("/app/admin")) return "Painel Administrativo";
-  return "REZENDE CLUB";
+  return "RZ TRADER STUDIO";
 }

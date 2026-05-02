@@ -37,7 +37,7 @@ export default function Signup() {
               <Crown className="h-3.5 w-3.5 text-amber-400" />
             </div>
             <span className="font-serif text-[11px] tracking-[0.28em] text-white/90 sm:text-[12px]">
-              RZ&nbsp;TRADER&nbsp;STHUB
+              RZ&nbsp;TRADER&nbsp;STUDIO
             </span>
           </Link>
         </div>
