@@ -216,6 +216,34 @@ export default function Landing() {
             <span aria-hidden className="text-neutral-300">·</span>
             <span>fez história</span>
           </p>
+
+          {/* Portrait — editorial, premium */}
+          <div className="relative mx-auto mt-12 w-full max-w-[340px] sm:mt-16 sm:max-w-[400px]">
+            {/* ambient golden glow */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-10 -z-10 bg-[radial-gradient(60%_55%_at_50%_50%,rgba(212,175,55,0.22),transparent_70%)] blur-2xl"
+            />
+            {/* hairline halo behind */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-10 top-6 -z-10 h-[88%] rounded-[40%_60%_55%_45%/45%_50%_50%_55%] bg-gradient-to-b from-neutral-100 to-white shadow-[0_40px_120px_-30px_rgba(0,0,0,0.18)] ring-1 ring-neutral-200/70"
+            />
+            <img
+              src={rezendeHistoriaImg}
+              alt="Rezende — operador, dia que fez história"
+              width={900}
+              height={1100}
+              loading="lazy"
+              className="relative z-10 mx-auto block h-auto w-full select-none drop-shadow-[0_30px_50px_rgba(0,0,0,0.25)]"
+            />
+            {/* signature mark */}
+            <div className="relative z-10 mt-4 flex items-center justify-center gap-3 font-mono text-[9px] uppercase tracking-[0.42em] text-neutral-400">
+              <span className="h-px w-8 bg-neutral-300" />
+              <span>30 · WIN · sem gale</span>
+              <span className="h-px w-8 bg-neutral-300" />
+            </div>
+          </div>
         </div>
       </section>
 
